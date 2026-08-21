@@ -1,3 +1,5 @@
+using Book_tracker.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Book_tracker.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,17 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
     options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ActiveUser", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.AddRequirements(new ActiveUserRequirement());
+    });
+});
+
+builder.Services.AddScoped<IAuthorizationHandler, ActiveUserHandler>();
 
 builder.Services.AddControllersWithViews();
 

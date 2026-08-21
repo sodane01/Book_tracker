@@ -4,6 +4,7 @@ using Book_tracker.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Book_tracker.Models;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,13 @@ using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
     await SeedData.SeedRolesAsync(serviceProvider);
+
+    if (app.Environment.IsDevelopment())
+    {
+        await SeedData.SeedAdminAsync(
+            serviceProvider,
+            builder.Configuration);
+    }
 }
 
 app.Run();

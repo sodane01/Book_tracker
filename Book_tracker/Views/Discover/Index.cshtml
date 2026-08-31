@@ -1,0 +1,95 @@
+﻿@model Book_tracker.ViewModels.DiscoverViewModel
+
+@{
+    ViewData["Title"] = "Discover";
+}
+
+<section class="discover-page">
+    <div class="discover-header">
+        <p class="home-eyebrow">Find your next read</p>
+
+        <h1>Discover books</h1>
+
+        <p class="discover-intro">
+            Search for books and explore new titles, authors and stories.
+        </p>
+    </div>
+
+    <form asp-controller="Discover"
+          asp-action="Index"
+          method="get"
+          class="discover-search">
+
+        <label asp-for="SearchQuery" class="form-label">
+            Search for books
+        </label>
+
+        <div class="discover-search-row">
+            <div class="discover-search-type">
+                <label asp-for="SearchType" class="form-label">
+                    Search by
+                </label>
+
+                <select asp-for="SearchType"
+                        asp-items="Html.GetEnumSelectList<Book_tracker.Models.Enums.BookSearchType>()"
+                        class="form-select">
+                </select>
+            </div>
+
+            <div class="discover-search-query">
+                <label asp-for="SearchQuery" class="form-label">
+                    Search term
+                </label>
+
+                <input asp-for="SearchQuery"
+                       class="form-control"
+                       placeholder="Enter a title, author, genre or series..." />
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary discover-search-button">
+                Search
+            </button>
+        </div>
+    </form>
+
+    <section class="discover-results">
+        @if (!Model.HasSearched)
+        {
+            <div class="home-empty-state">
+                <h2>Ready to discover something new?</h2>
+
+                <p>
+                    Enter a search above to start exploring books.
+                </p>
+            </div>
+        }
+        else if (Model.SearchResults.Count == 0)
+        {
+            <div class="home-empty-state">
+                <h2>No books found</h2>
+
+                <p>
+                    We couldn't find any books matching your search.
+                    Try another title, author or keyword.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="discover-result-list">
+                @foreach (var book in Model.SearchResults)
+                {
+                    <div class="discover-result-item">
+                        <h2>@book.Title</h2>
+
+                        @if (!string.IsNullOrWhiteSpace(book.Author))
+                        {
+                            <p>@book.Author</p>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</section>

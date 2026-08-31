@@ -1,10 +1,10 @@
 using Book_tracker.Authorization;
-using Microsoft.AspNetCore.Authorization;
 using Book_tracker.Data;
+using Book_tracker.Models;
+using Book_tracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Book_tracker.Models;
-using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +36,11 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IAuthorizationHandler, ActiveUserHandler>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>(client =>
+{
+    client.BaseAddress = new Uri("https://www.googleapis.com/books/v1/");
+});
 
 var app = builder.Build();
 
@@ -69,6 +74,7 @@ app.MapRazorPages()
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
+
     await SeedData.SeedRolesAsync(serviceProvider);
 
     if (app.Environment.IsDevelopment())

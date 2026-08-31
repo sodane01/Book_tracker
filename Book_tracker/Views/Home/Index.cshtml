@@ -1,8 +1,151 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Book_tracker.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    @if (Model.IsAuthenticated)
+    {
+        <section class="user-home-header">
+            <p class="home-eyebrow">Your reading dashboard</p>
+
+            <h1>Welcome back!</h1>
+
+            <p class="user-home-welcome">
+                Signed in as <strong>@Model.UserName</strong>
+            </p>
+        </section>
+
+        <section class="reading-overview">
+            <div class="home-section-heading">
+                <h2>Your reading overview</h2>
+                <p>A quick look at your Book Tracker activity.</p>
+            </div>
+
+            <div class="stat-card-grid">
+                <article class="stat-card">
+                    <span class="stat-value">@Model.CurrentlyReadingCount</span>
+                    <span class="stat-label">Currently reading</span>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-value">@Model.BooksReadCount</span>
+                    <span class="stat-label">Books read</span>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-value">@Model.FavouriteBooksCount</span>
+                    <span class="stat-label">Favourites</span>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-value">@Model.UnreadNotificationCount</span>
+                    <span class="stat-label">Unread notifications</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="currently-reading-section">
+            <div class="home-section-heading">
+                <h2>Currently reading</h2>
+                <p>Pick up where you left off.</p>
+            </div>
+
+            @if (Model.CurrentlyReadingCount == 0)
+            {
+                <div class="home-empty-state">
+                    <h3>No books in progress yet</h3>
+
+                    <p>
+                        When you start reading a book, it will appear here
+                        so you can quickly continue your reading journey.
+                    </p>
+
+                    <a asp-controller="Discover"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Discover a book
+                    </a>
+                </div>
+            }
+        </section>
+    }
+    else
+    {
+        <section class="home-hero">
+            <div class="home-hero-content">
+                <div class="home-hero-copy">
+                    <p class="home-eyebrow">Your personal reading space</p>
+
+                    <h1>Discover, track and enjoy your next great read.</h1>
+
+                    <p class="home-hero-text">
+                        Search for books, build your reading shelves,
+                        save favourites and keep track of what you are reading.
+                    </p>
+
+                    <div class="home-hero-actions">
+                        <a asp-controller="Discover"
+                           asp-action="Index"
+                           class="btn btn-primary">
+                            Discover books
+                        </a>
+
+                        <a asp-area="Identity"
+                           asp-page="/Account/Register"
+                           class="btn btn-outline-primary">
+                            Create account
+                        </a>
+                    </div>
+                </div>
+
+                <div class="home-book-visual" aria-hidden="true">
+                    <div class="decorative-book book-one"></div>
+                    <div class="decorative-book book-two"></div>
+                    <div class="decorative-book book-three"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-features">
+            <div class="home-section-heading">
+                <h2>Everything you need to keep your reading organized</h2>
+
+                <p>
+                    Start exploring immediately. Create an account when you want
+                    to save books and track your reading.
+                </p>
+            </div>
+
+            <div class="home-feature-grid">
+                <article class="home-feature-card">
+                    <h3>Discover books</h3>
+
+                    <p>
+                        Search for books and explore titles, authors,
+                        covers and book details.
+                    </p>
+                </article>
+
+                <article class="home-feature-card">
+                    <h3>Build your shelves</h3>
+
+                    <p>
+                        Keep track of books you want to read,
+                        are currently reading or have finished.
+                    </p>
+                </article>
+
+                <article class="home-feature-card">
+                    <h3>Keep your favourites</h3>
+
+                    <p>
+                        Save favourite books and create your own
+                        personal reading collection.
+                    </p>
+                </article>
+            </div>
+        </section>
+    }
 </div>

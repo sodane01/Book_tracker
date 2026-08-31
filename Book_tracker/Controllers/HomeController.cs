@@ -1,6 +1,7 @@
 using Book_tracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Book_tracker.ViewModels;
 
 namespace Book_tracker.Controllers
 {
@@ -8,7 +9,13 @@ namespace Book_tracker.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new HomeViewModel
+            {
+                IsAuthenticated = User.Identity?.IsAuthenticated ?? false,
+                UserName = User.Identity?.Name
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

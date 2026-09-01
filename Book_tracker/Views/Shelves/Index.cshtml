@@ -1,0 +1,182 @@
+﻿@model Book_tracker.ViewModels.ShelvesViewModel
+
+@{
+    ViewData["Title"] = "My Shelves";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h1>My Shelves</h1>
+
+        <p class="text-muted">
+            Keep track of the books you want to read,
+            are currently reading, and have finished.
+        </p>
+    </div>
+
+    @if (!Model.HasBooks)
+    {
+        <div class="home-empty-state mb-5">
+
+            <h2>Your shelves are waiting for books</h2>
+
+            <p>
+                Discover books and add them to your shelves
+                to start building your reading collection.
+            </p>
+
+            <a asp-controller="Discover"
+               asp-action="Index"
+               class="btn btn-primary">
+                Discover Books
+            </a>
+
+        </div>
+    }
+
+    <section class="mb-5"
+             aria-labelledby="want-to-read-heading">
+
+        <h2 id="want-to-read-heading">
+            Want to Read
+        </h2>
+
+        @if (Model.WantToReadBooks.Any())
+        {
+            <div class="row g-4 mt-1">
+
+                @foreach (var book in Model.WantToReadBooks)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4">
+
+                        <div class="card h-100">
+
+                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
+                            {
+                                <img src="@book.CoverImageUrl"
+                                     class="card-img-top"
+                                     alt="Cover for @book.Title" />
+                            }
+
+                            <div class="card-body">
+
+                                <h3 class="h5 card-title">
+                                    @book.Title
+                                </h3>
+
+                                <p class="card-text text-muted">
+                                    @(string.IsNullOrWhiteSpace(book.Author)
+                                        ? "Unknown author"
+                                        : book.Author)
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </section>
+
+    <section class="mb-5"
+             aria-labelledby="currently-reading-heading">
+
+        <h2 id="currently-reading-heading">
+            Currently Reading
+        </h2>
+
+        @if (Model.CurrentlyReadingBooks.Any())
+        {
+            <div class="row g-4 mt-1">
+
+                @foreach (var book in Model.CurrentlyReadingBooks)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4">
+
+                        <div class="card h-100">
+
+                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
+                            {
+                                <img src="@book.CoverImageUrl"
+                                     class="card-img-top"
+                                     alt="Cover for @book.Title" />
+                            }
+
+                            <div class="card-body">
+
+                                <h3 class="h5 card-title">
+                                    @book.Title
+                                </h3>
+
+                                <p class="card-text text-muted">
+                                    @(string.IsNullOrWhiteSpace(book.Author)
+                                        ? "Unknown author"
+                                        : book.Author)
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </section>
+
+    <section class="mb-5"
+             aria-labelledby="read-heading">
+
+        <h2 id="read-heading">
+            Read
+        </h2>
+
+        @if (Model.ReadBooks.Any())
+        {
+            <div class="row g-4 mt-1">
+
+                @foreach (var book in Model.ReadBooks)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4">
+
+                        <div class="card h-100">
+
+                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
+                            {
+                                <img src="@book.CoverImageUrl"
+                                     class="card-img-top"
+                                     alt="Cover for @book.Title" />
+                            }
+
+                            <div class="card-body">
+
+                                <h3 class="h5 card-title">
+                                    @book.Title
+                                </h3>
+
+                                <p class="card-text text-muted">
+                                    @(string.IsNullOrWhiteSpace(book.Author)
+                                        ? "Unknown author"
+                                        : book.Author)
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</div>

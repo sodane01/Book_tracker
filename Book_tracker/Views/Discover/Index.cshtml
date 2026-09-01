@@ -1,95 +1,456 @@
-﻿@model Book_tracker.ViewModels.DiscoverViewModel
+﻿@using Book_tracker.Models.Enums
+@model Book_tracker.ViewModels.DiscoverViewModel
 
 @{
     ViewData["Title"] = "Discover";
 }
 
-<section class="discover-page">
-    <div class="discover-header">
-        <p class="home-eyebrow">Find your next read</p>
+<div class="discover-page">
 
-        <h1>Discover books</h1>
+    @if (TempData["ShelfMessage"] is string shelfMessage)
+    {
+        <div class="alert alert-success"
+             role="status">
+            @shelfMessage
+        </div>
+    }
+
+    <div class="discover-header">
+        <h1>Discover Books</h1>
 
         <p class="discover-intro">
-            Search for books and explore new titles, authors and stories.
+            Search for books by title, author, genre or series.
         </p>
     </div>
 
-    <form asp-controller="Discover"
-          asp-action="Index"
-          method="get"
-          class="discover-search">
+    <!-- Search -->
+    <section class="discover-search">
 
-        <label asp-for="SearchQuery" class="form-label">
-            Search for books
-        </label>
+        <form asp-controller="Discover"
+              asp-action="Index"
+              method="get">
 
-        <div class="discover-search-row">
-            <div class="discover-search-type">
-                <label asp-for="SearchType" class="form-label">
-                    Search by
-                </label>
+            <div class="discover-search-row">
 
-                <select asp-for="SearchType"
-                        asp-items="Html.GetEnumSelectList<Book_tracker.Models.Enums.BookSearchType>()"
-                        class="form-select">
-                </select>
+                <div class="discover-search-type">
+
+                    <label for="searchType"
+                           class="form-label">
+                        Search by
+                    </label>
+
+                    <select id="searchType"
+                            name="searchType"
+                            class="form-select">
+
+                        @if (Model.SearchType == BookSearchType.Title)
+                        {
+                            <option value="Title" selected>
+                                Title
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="Title">
+                                Title
+                            </option>
+                        }
+
+                        @if (Model.SearchType == BookSearchType.Author)
+                        {
+                            <option value="Author" selected>
+                                Author
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="Author">
+                                Author
+                            </option>
+                        }
+
+                        @if (Model.SearchType == BookSearchType.Genre)
+                        {
+                            <option value="Genre" selected>
+                                Genre
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="Genre">
+                                Genre
+                            </option>
+                        }
+
+                        @if (Model.SearchType == BookSearchType.Series)
+                        {
+                            <option value="Series" selected>
+                                Series
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="Series">
+                                Series
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="discover-search-query">
+
+                    <label for="searchQuery"
+                           class="form-label">
+                        Search term
+                    </label>
+
+                    <input id="searchQuery"
+                           name="searchQuery"
+                           type="text"
+                           class="form-control"
+                           value="@Model.SearchQuery"
+                           placeholder="Search books..." />
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Search
+                </button>
+
             </div>
 
-            <div class="discover-search-query">
-                <label asp-for="SearchQuery" class="form-label">
-                    Search term
-                </label>
+        </form>
 
-                <input asp-for="SearchQuery"
-                       class="form-control"
-                       placeholder="Enter a title, author, genre or series..." />
-            </div>
+    </section>
 
-            <button type="submit"
-                    class="btn btn-primary discover-search-button">
-                Search
-            </button>
-        </div>
-    </form>
 
+    <!-- Results -->
     <section class="discover-results">
+
         @if (!Model.HasSearched)
         {
             <div class="home-empty-state">
-                <h2>Ready to discover something new?</h2>
+
+                <h2>Search for your next book</h2>
 
                 <p>
-                    Enter a search above to start exploring books.
+                    Enter a search term above to start exploring books.
                 </p>
+
             </div>
         }
-        else if (Model.SearchResults.Count == 0)
+        else if (Model.HasSearchError)
+        {
+            <div class="home-empty-state"
+                 role="alert">
+
+                <h2>Unable to search for books</h2>
+
+                <p>
+                    Unable to search for books. Please try again.
+                </p>
+
+            </div>
+        }
+        else if (!Model.SearchResults.Any())
         {
             <div class="home-empty-state">
+
                 <h2>No books found</h2>
 
                 <p>
-                    We couldn't find any books matching your search.
-                    Try another title, author or keyword.
+                    Try another search term or search type.
                 </p>
+
             </div>
         }
         else
         {
+            <!-- Sort results -->
+            <div class="discover-sort">
+
+                <form asp-controller="Discover"
+                      asp-action="Index"
+                      method="get">
+
+                    <input type="hidden"
+                           name="searchQuery"
+                           value="@Model.SearchQuery" />
+
+                    <input type="hidden"
+                           name="searchType"
+                           value="@Model.SearchType" />
+
+                    <label for="sortType"
+                           class="form-label">
+                        Sort by
+                    </label>
+
+                    <div class="discover-sort-row">
+
+                        <select id="sortType"
+                                name="sortType"
+                                class="form-select">
+
+                            @if (Model.SortType == BookSortType.Title)
+                            {
+                                <option value="Title" selected>
+                                    Title
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="Title">
+                                    Title
+                                </option>
+                            }
+
+                            @if (Model.SortType == BookSortType.Author)
+                            {
+                                <option value="Author" selected>
+                                    Author
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="Author">
+                                    Author
+                                </option>
+                            }
+
+                        </select>
+
+                        <button type="submit"
+                                class="btn btn-outline-primary">
+                            Sort
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- Book cards -->
             <div class="discover-result-list">
+
                 @foreach (var book in Model.SearchResults)
                 {
-                    <div class="discover-result-item">
-                        <h2>@book.Title</h2>
+                    <article class="book-result-card">
 
-                        @if (!string.IsNullOrWhiteSpace(book.Author))
-                        {
-                            <p>@book.Author</p>
-                        }
-                    </div>
+                        <div class="book-result-cover">
+
+                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
+                            {
+                                <img src="@book.CoverImageUrl"
+                                     alt="Cover of @book.Title" />
+                            }
+                            else
+                            {
+                                <div class="book-cover-placeholder">
+
+                                    <span aria-hidden="true">
+                                        📖
+                                    </span>
+
+                                    <span>
+                                        No cover available
+                                    </span>
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <div class="book-result-card-content">
+
+                            <h2 class="book-result-title">
+                                @book.Title
+                            </h2>
+
+                            @if (!string.IsNullOrWhiteSpace(book.Author))
+                            {
+                                <p class="book-result-author">
+                                    @book.Author
+                                </p>
+                            }
+
+                            @if (book.AverageRating.HasValue)
+                            {
+                                <p class="book-result-rating">
+
+                                    <span aria-hidden="true">
+                                        ★
+                                    </span>
+
+                                    @book.AverageRating.Value.ToString("0.0")
+
+                                </p>
+                            }
+
+
+                            <!-- View Details -->
+                            <div class="mt-3">
+
+                                <a asp-controller="Book"
+                                   asp-action="Details"
+                                   asp-route-id="@book.ExternalBookId"
+                                   class="btn btn-outline-primary book-result-details">
+
+                                    View details
+
+                                </a>
+
+                            </div>
+
+
+                            <!-- Add to Shelf -->
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <form asp-controller="Shelves"
+                                      asp-action="Add"
+                                      method="post"
+                                      class="book-result-shelf mt-3">
+
+                                    <input type="hidden"
+                                           name="ExternalBookId"
+                                           value="@book.ExternalBookId" />
+
+                                    <input type="hidden"
+                                           name="SearchQuery"
+                                           value="@Model.SearchQuery" />
+
+                                    <input type="hidden"
+                                           name="SearchType"
+                                           value="@Model.SearchType" />
+
+                                    <input type="hidden"
+                                           name="SortType"
+                                           value="@Model.SortType" />
+
+                                    <label for="readingStatus-@book.ExternalBookId"
+                                           class="form-label">
+                                        Add to shelf
+                                    </label>
+
+                                    <select id="readingStatus-@book.ExternalBookId"
+                                            name="ReadingStatus"
+                                            class="form-select">
+
+                                        <option value="WantToRead">
+                                            Want to Read
+                                        </option>
+
+                                        <option value="CurrentlyReading">
+                                            Currently Reading
+                                        </option>
+
+                                        <option value="Read">
+                                            Read
+                                        </option>
+
+                                    </select>
+
+                                    <button type="submit"
+                                            class="btn btn-primary mt-2">
+                                        Add to Shelf
+                                    </button>
+
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="book-result-shelf mt-3">
+
+                                    <button type="button"
+                                            class="btn btn-primary guest-add-to-shelf"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#guestShelfModal">
+                                        Add to Shelf
+                                    </button>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </article>
                 }
+
             </div>
         }
+
     </section>
-</section>
+
+</div>
+
+
+<!-- Guest Authentication Modal -->
+@if (User.Identity?.IsAuthenticated != true)
+{
+    <div class="modal fade"
+         id="guestShelfModal"
+         tabindex="-1"
+         aria-labelledby="guestShelfModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h2 class="modal-title fs-5"
+                        id="guestShelfModalLabel">
+                        Save books to your shelves
+                    </h2>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p class="mb-0">
+                        Sign in to save books to your shelves.
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <a asp-area="Identity"
+                       asp-page="/Account/Login"
+                       class="btn btn-primary">
+                        Log in
+                    </a>
+
+                    <a asp-area="Identity"
+                       asp-page="/Account/Register"
+                       class="btn btn-outline-primary">
+                        Create account
+                    </a>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}

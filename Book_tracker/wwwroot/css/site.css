@@ -430,13 +430,18 @@ p {
         padding-top: 3rem;
     }
 }
-/* =========================================================
-   DISCOVER PAGE
-   ========================================================= */
+
+
+/* ========================================
+   Discover
+======================================== */
 
 .discover-page {
     padding: 3.5rem 0 5rem;
 }
+
+
+/* Header */
 
 .discover-header {
     max-width: 720px;
@@ -458,7 +463,9 @@ p {
 }
 
 
-/* Search */
+/* ========================================
+   Search
+======================================== */
 
 .discover-search {
     max-width: 900px;
@@ -473,32 +480,60 @@ p {
 
 .discover-search-row {
     display: flex;
-    align-items: stretch;
+    align-items: flex-end;
     gap: 0.75rem;
 }
 
-    .discover-search-row .form-control {
-        min-height: 48px;
-        padding: 0.75rem 1rem;
-        border: 1px solid var(--bt-border);
-        border-radius: var(--bt-radius-sm);
-        background: var(--bt-surface);
+.discover-search-type {
+    width: 140px;
+    flex-shrink: 0;
+}
+
+.discover-search-query {
+    flex: 1;
+    max-width: 420px;
+}
+
+.discover-search-row .form-control {
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--bt-border);
+    border-radius: var(--bt-radius-sm);
+    background: var(--bt-surface);
+    color: var(--bt-text);
+}
+
+    .discover-search-row .form-control:focus {
+        border-color: var(--bt-primary);
+        box-shadow: 0 0 0 0.2rem rgba(52, 74, 61, 0.12);
     }
 
-        .discover-search-row .form-control:focus {
-            border-color: var(--bt-primary);
-            box-shadow: 0 0 0 0.2rem rgba(52, 74, 61, 0.12);
-        }
+.discover-search-row .form-select {
+    min-height: 48px;
+    padding: 0.75rem 2.25rem 0.75rem 1rem;
+    border: 1px solid var(--bt-border);
+    border-radius: var(--bt-radius-sm);
+    background-color: var(--bt-surface);
+    color: var(--bt-text);
+}
 
-    .discover-search-row .btn {
-        min-width: 110px;
-        padding: 0.75rem 1.5rem;
-        border-radius: var(--bt-radius-sm);
-        font-weight: 600;
+    .discover-search-row .form-select:focus {
+        border-color: var(--bt-primary);
+        box-shadow: 0 0 0 0.2rem rgba(52, 74, 61, 0.12);
     }
 
+.discover-search-row .btn {
+    min-width: 110px;
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--bt-radius-sm);
+    font-weight: 600;
+}
 
-/* Results */
+
+/* ========================================
+   Results
+======================================== */
 
 .discover-results {
     max-width: 900px;
@@ -507,42 +542,143 @@ p {
 .discover-result-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
-.discover-result-item {
-    padding: 1.4rem 1.5rem;
+
+/* ========================================
+   Book result card
+======================================== */
+
+.book-result-card {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+    min-height: 190px;
+    padding: 1.25rem;
     border: 1px solid var(--bt-border);
     border-radius: var(--bt-radius-md);
     background: var(--bt-surface);
     box-shadow: var(--bt-shadow);
+    overflow: hidden;
 }
 
-    .discover-result-item h2 {
-        margin-bottom: 0.4rem;
-        font-size: 1.25rem;
-        line-height: 1.35;
-        font-weight: 700;
-        color: var(--bt-text);
+
+/* ========================================
+   Book cover
+======================================== */
+
+.book-result-cover {
+    width: 120px;
+    min-width: 120px;
+    height: 170px;
+    border-radius: var(--bt-radius-sm);
+    overflow: hidden;
+    background: #f1eee8;
+}
+
+    .book-result-cover img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
-    .discover-result-item p {
-        margin-bottom: 0;
-        color: var(--bt-text-muted);
-        line-height: 1.5;
+
+/* Missing cover */
+
+.book-cover-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    text-align: center;
+    color: var(--bt-text-muted);
+    background: #f1eee8;
+}
+
+    .book-cover-placeholder span:first-child {
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+    }
+
+    .book-cover-placeholder span:last-child {
+        font-size: 0.8rem;
+        line-height: 1.3;
     }
 
 
-/* Empty / initial state */
+/* ========================================
+   Book information
+======================================== */
+
+.book-result-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    padding: 0.25rem 0;
+}
+
+
+/* Title */
+
+.book-result-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--bt-text);
+}
+
+
+/* Author */
+
+.book-result-author {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--bt-text-muted);
+}
+
+
+/* Rating */
+
+.book-result-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--bt-text);
+}
+
+    .book-result-rating span {
+        font-size: 1.05rem;
+    }
+
+
+/* ========================================
+   Empty / initial state
+======================================== */
 
 .discover-results .home-empty-state {
     max-width: 900px;
 }
 
 
-/* Responsive */
+/* ========================================
+   Responsive
+======================================== */
 
 @media (max-width: 768px) {
+
     .discover-page {
         padding-top: 2.5rem;
     }
@@ -557,14 +693,43 @@ p {
 
     .discover-search-row {
         flex-direction: column;
+        align-items: stretch;
     }
 
-        .discover-search-row .btn {
-            width: 100%;
-        }
+    .discover-search-type,
+    .discover-search-query {
+        width: 100%;
+        max-width: none;
+    }
+
+    .discover-search-row .btn {
+        width: 100%;
+    }
+
+    .book-result-card {
+        gap: 1.25rem;
+        min-height: 170px;
+        padding: 1rem;
+    }
+
+    .book-result-cover {
+        width: 105px;
+        min-width: 105px;
+        height: 150px;
+    }
+
+    .book-result-title {
+        font-size: 1.2rem;
+    }
+
+    .book-result-author {
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
 }
 
 @media (max-width: 576px) {
+
     .discover-page {
         padding-top: 2rem;
     }
@@ -573,7 +738,449 @@ p {
         font-size: 2.25rem;
     }
 
-    .discover-result-item {
-        padding: 1.2rem;
+    .book-result-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
     }
+
+    .book-result-cover {
+        width: 100px;
+        min-width: 100px;
+        height: 145px;
+    }
+
+    .book-result-card-content {
+        width: 100%;
+        padding: 0;
+    }
+
+    .book-result-title {
+        margin-bottom: 0.4rem;
+        font-size: 1.15rem;
+    }
+
+    .book-result-author {
+        margin-bottom: 0.65rem;
+    }
+}
+
+
+/* ========================================
+   Book Details
+======================================== */
+
+.book-details-page {
+    padding: 3.5rem 0 5rem;
+}
+
+.book-details-back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--bt-primary);
+}
+
+    .book-details-back:hover {
+        text-decoration: underline;
+    }
+
+.book-details-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    max-width: 1000px;
+}
+
+.book-details-cover {
+    flex-shrink: 0;
+    width: 220px;
+}
+
+    .book-details-cover img {
+        display: block;
+        width: 220px;
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--bt-radius-md);
+        box-shadow: var(--bt-shadow);
+    }
+
+    .book-details-cover .book-cover-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 220px;
+        height: 320px;
+        padding: 1.25rem;
+        border: 1px solid var(--bt-border);
+        border-radius: var(--bt-radius-md);
+        background: #f1eee8;
+        color: var(--bt-text-muted);
+        text-align: center;
+    }
+
+        .book-details-cover .book-cover-placeholder span:first-child {
+            margin-bottom: 0.75rem;
+            font-size: 2.5rem;
+        }
+
+        .book-details-cover .book-cover-placeholder span:last-child {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+.book-details-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 720px;
+}
+
+    .book-details-content h1 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        font-weight: 700;
+        line-height: 1.15;
+        color: var(--bt-text);
+    }
+
+    .book-details-content > p {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--bt-text-muted);
+    }
+
+.book-details-meta {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--bt-border);
+}
+
+    .book-details-meta p {
+        margin-bottom: 0.55rem;
+        line-height: 1.5;
+        color: var(--bt-text-muted);
+    }
+
+        .book-details-meta p:last-child {
+            margin-bottom: 0;
+        }
+
+    .book-details-meta strong {
+        font-weight: 600;
+        color: var(--bt-text);
+    }
+
+.book-details-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.book-details-description {
+    max-width: 720px;
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--bt-border);
+}
+
+    .book-details-description h2 {
+        margin: 0 0 0.85rem;
+        font-size: 1.35rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--bt-text);
+    }
+
+    .book-details-description p {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.75;
+        color: var(--bt-text-muted);
+    }
+
+@media (max-width: 768px) {
+    .book-details-page {
+        padding-top: 2.5rem;
+    }
+
+    .book-details-layout {
+        gap: 2rem;
+    }
+
+    .book-details-cover,
+    .book-details-cover img,
+    .book-details-cover .book-cover-placeholder {
+        width: 180px;
+    }
+
+        .book-details-cover .book-cover-placeholder {
+            height: 265px;
+        }
+
+    .book-details-content h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .book-details-page {
+        padding-top: 2rem;
+    }
+
+    .book-details-back {
+        margin-bottom: 1.5rem;
+    }
+
+    .book-details-layout {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .book-details-cover {
+        width: 150px;
+    }
+
+        .book-details-cover img,
+        .book-details-cover .book-cover-placeholder {
+            width: 150px;
+        }
+
+        .book-details-cover .book-cover-placeholder {
+            height: 220px;
+        }
+
+    .book-details-content {
+        width: 100%;
+        max-width: none;
+    }
+
+        .book-details-content h1 {
+            margin-bottom: 0.6rem;
+            font-size: 1.8rem;
+        }
+
+        .book-details-content > p {
+            font-size: 1rem;
+        }
+
+    .book-details-meta {
+        margin-top: 1.4rem;
+        padding-top: 1.25rem;
+    }
+
+    .book-details-description {
+        margin-top: 1.5rem;
+        padding-top: 1.4rem;
+    }
+
+        .book-details-description h2 {
+            font-size: 1.2rem;
+        }
+}
+
+
+/* ========================================
+   Discover - Sort Results
+   DISC-08
+======================================== */
+
+.discover-sort {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+    .discover-sort form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .discover-sort .form-label {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+.discover-sort-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+    .discover-sort-row .form-select {
+        width: 180px;
+        min-width: 180px;
+    }
+
+    .discover-sort-row .btn {
+        white-space: nowrap;
+    }
+
+@media (max-width: 576px) {
+
+    .discover-sort {
+        justify-content: stretch;
+    }
+
+        .discover-sort form {
+            width: 100%;
+        }
+
+    .discover-sort-row {
+        width: 100%;
+    }
+
+        .discover-sort-row .form-select {
+            width: 100%;
+            min-width: 0;
+            flex: 1;
+        }
+}
+
+
+/* ========================================
+   Discover - Add to Shelf
+   DISC-09
+======================================== */
+
+.book-result-shelf {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    background: #f8f9fc;
+    border: 1px solid #e2e6ef;
+    border-radius: 10px;
+}
+
+    .book-result-shelf .form-label {
+        display: block;
+        margin-bottom: 0.45rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .book-result-shelf .form-select {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        background-color: #ffffff;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .book-result-shelf .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+
+    .book-result-shelf .btn {
+        width: 100%;
+        min-height: 42px;
+        margin-top: 0.75rem;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+.book-result-details {
+    min-width: 130px;
+}
+
+
+/* ========================================
+   Discover - Shelf responsive styling
+======================================== */
+
+@media (max-width: 576px) {
+
+    .book-result-shelf {
+        padding: 0.85rem;
+    }
+
+        .book-result-shelf .form-select,
+        .book-result-shelf .btn {
+            width: 100%;
+        }
+
+    .book-result-details {
+        width: 100%;
+    }
+}
+
+
+/* ========================================
+   Discover - Guest Authentication Modal
+   DISC-10
+======================================== */
+
+#guestShelfModal .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+    overflow: hidden;
+}
+
+#guestShelfModal .modal-header {
+    padding: 1.4rem 1.5rem 0.75rem;
+    border-bottom: none;
+}
+
+#guestShelfModal .modal-title {
+    font-weight: 700;
+    color: #2f3e46;
+}
+
+#guestShelfModal .modal-body {
+    padding: 0.5rem 1.5rem 1.25rem;
+    color: #5f6b73;
+    line-height: 1.6;
+}
+
+#guestShelfModal .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid #edf0f2;
+}
+
+    #guestShelfModal .modal-footer .btn {
+        min-height: 42px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+
+/* ========================================
+   Guest Modal - Responsive
+======================================== */
+
+@media (max-width: 576px) {
+
+    #guestShelfModal .modal-dialog {
+        margin: 1rem;
+    }
+
+    #guestShelfModal .modal-header {
+        padding: 1.25rem 1.25rem 0.65rem;
+    }
+
+    #guestShelfModal .modal-body {
+        padding: 0.5rem 1.25rem 1rem;
+    }
+
+    #guestShelfModal .modal-footer {
+        flex-direction: column;
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+        #guestShelfModal .modal-footer .btn {
+            width: 100%;
+            margin: 0;
+        }
 }

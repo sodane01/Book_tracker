@@ -1,0 +1,93 @@
+﻿@model Book_tracker.ViewModels.BookDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="book-details-page">
+
+    <a asp-controller="Discover"
+       asp-action="Index"
+       class="book-details-back">
+        ← Back to Discover
+    </a>
+
+    <div class="book-details-layout">
+
+        <div class="book-details-cover">
+
+            @if (!string.IsNullOrWhiteSpace(Model.CoverImageUrl))
+            {
+                <img src="@Model.CoverImageUrl"
+                     alt="Cover of @Model.Title" />
+            }
+            else
+            {
+                <div class="book-cover-placeholder">
+                    <span aria-hidden="true">📖</span>
+                    <span>No cover available</span>
+                </div>
+            }
+
+        </div>
+
+        <div class="book-details-content">
+
+            <h1>
+                @Model.Title
+            </h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Author))
+            {
+                <p>
+                    @Model.Author
+                </p>
+            }
+
+            <div class="book-details-meta">
+
+                @if (!string.IsNullOrWhiteSpace(Model.Publisher))
+                {
+                    <p>
+                        <strong>Publisher:</strong>
+                        @Model.Publisher
+                    </p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.PublishedDate))
+                {
+                    <p>
+                        <strong>Published:</strong>
+                        @Model.PublishedDate
+                    </p>
+                }
+
+                @if (Model.AverageRating.HasValue)
+                {
+                    <p class="book-details-rating">
+                        <strong>Rating:</strong>
+                        <span aria-hidden="true">★</span>
+                        @Model.AverageRating.Value.ToString("0.0")
+                    </p>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <section class="book-details-description">
+                        <h2>About this book</h2>
+
+                        <p>
+                            @System.Text.RegularExpressions.Regex.Replace(
+                                System.Net.WebUtility.HtmlDecode(Model.Description),
+                                "<.*?>",
+                                string.Empty)
+                        </p>
+                    </section>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

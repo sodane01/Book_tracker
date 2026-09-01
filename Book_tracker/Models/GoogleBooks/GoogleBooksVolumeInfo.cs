@@ -6,8 +6,14 @@
 
         public List<string> Authors { get; set; } = new();
 
-        public double? AverageRating { get; set; }
+        public string? Publisher { get; set; }
+
+        public string? PublishedDate { get; set; }
+
+        public string? Description { get; set; }
 
         public GoogleBooksImageLinks? ImageLinks { get; set; }
+
+        public double? AverageRating { get; set; }
     }
 }

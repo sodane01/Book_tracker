@@ -37,10 +37,13 @@ builder.Services.AddScoped<IAuthorizationHandler, ActiveUserHandler>();
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>(client =>
-{
-    client.BaseAddress = new Uri("https://www.googleapis.com/books/v1/");
-});
+builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://www.googleapis.com/books/v1/");
+    });
+builder.Services.AddScoped<IUserBookService, UserBookService>();
 
 var app = builder.Build();
 

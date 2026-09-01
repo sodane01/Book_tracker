@@ -2,6 +2,7 @@
 using Book_tracker.Models;
 using Book_tracker.Models.GoogleBooks;
 using Book_tracker.Models.Enums;
+using Book_tracker.ViewModels;
 
 namespace Book_tracker.Services
 {
@@ -18,20 +19,26 @@ namespace Book_tracker.Services
             _configuration = configuration;
         }
 
-        public async Task<List<BookSearchResult>> SearchBooksAsync(
+        public async Task<BookSearchServiceResult> SearchBooksAsync(
             string query,
             BookSearchType searchType)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                return new List<BookSearchResult>();
+                return new BookSearchServiceResult
+                {
+                    IsSuccess = true
+                };
             }
 
             var apiKey = _configuration["GoogleBooks:ApiKey"];
 
             if (string.IsNullOrWhiteSpace(apiKey))
             {
-                return new List<BookSearchResult>();
+                return new BookSearchServiceResult
+                {
+                    IsSuccess = false
+                };
             }
 
             try
@@ -50,21 +57,31 @@ namespace Book_tracker.Services
                 {
                     googleQuery = $"subject:{query}";
                 }
+                else if (searchType == BookSearchType.Series)
+                {
+                    googleQuery = query;
+                }
                 else
                 {
                     googleQuery = query;
                 }
-                var encodedQuery = Uri.EscapeDataString(googleQuery);
+
+                var encodedQuery =
+                    Uri.EscapeDataString(googleQuery);
 
                 var response = await _httpClient.GetAsync(
                     $"volumes?q={encodedQuery}&key={apiKey}");
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new List<BookSearchResult>();
+                    return new BookSearchServiceResult
+                    {
+                        IsSuccess = false
+                    };
                 }
 
-                var json = await response.Content.ReadAsStringAsync();
+                var json =
+                    await response.Content.ReadAsStringAsync();
 
                 var googleResponse =
                     JsonSerializer.Deserialize<GoogleBooksResponse>(
@@ -76,14 +93,19 @@ namespace Book_tracker.Services
 
                 if (googleResponse?.Items == null)
                 {
-                    return new List<BookSearchResult>();
+                    return new BookSearchServiceResult
+                    {
+                        IsSuccess = true
+                    };
                 }
 
                 var books = googleResponse.Items
                     .Select(volume => new BookSearchResult
                     {
                         ExternalBookId = volume.Id,
+
                         Title = volume.VolumeInfo.Title,
+
                         Author = string.Join(
                             ", ",
                             volume.VolumeInfo.Authors),
@@ -96,15 +118,107 @@ namespace Book_tracker.Services
                     })
                     .ToList();
 
-                return books;
+                return new BookSearchServiceResult
+                {
+                    IsSuccess = true,
+                    Books = books
+                };
             }
             catch (HttpRequestException)
             {
-                return new List<BookSearchResult>();
+                return new BookSearchServiceResult
+                {
+                    IsSuccess = false
+                };
             }
             catch (JsonException)
             {
-                return new List<BookSearchResult>();
+                return new BookSearchServiceResult
+                {
+                    IsSuccess = false
+                };
+            }
+        }
+
+        public async Task<BookDetailsViewModel?> GetBookByIdAsync(
+            string externalBookId)
+        {
+            if (string.IsNullOrWhiteSpace(externalBookId))
+            {
+                return null;
+            }
+
+            var apiKey = _configuration["GoogleBooks:ApiKey"];
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                return null;
+            }
+
+            try
+            {
+                var encodedBookId =
+                    Uri.EscapeDataString(externalBookId);
+
+                var response = await _httpClient.GetAsync(
+                    $"volumes/{encodedBookId}?key={apiKey}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var json =
+                    await response.Content.ReadAsStringAsync();
+
+                var volume =
+                    JsonSerializer.Deserialize<GoogleBooksVolume>(
+                        json,
+                        new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+
+                if (volume?.VolumeInfo == null)
+                {
+                    return null;
+                }
+
+                var book = new BookDetailsViewModel
+                {
+                    ExternalBookId = volume.Id,
+
+                    Title = volume.VolumeInfo.Title,
+
+                    Author = string.Join(
+                        ", ",
+                        volume.VolumeInfo.Authors),
+
+                    CoverImageUrl =
+                        volume.VolumeInfo.ImageLinks?.Thumbnail,
+
+                    Description =
+                        volume.VolumeInfo.Description,
+
+                    Publisher =
+                        volume.VolumeInfo.Publisher,
+
+                    PublishedDate =
+                        volume.VolumeInfo.PublishedDate,
+
+                    AverageRating =
+                        volume.VolumeInfo.AverageRating
+                };
+
+                return book;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+            catch (JsonException)
+            {
+                return null;
             }
         }
     }

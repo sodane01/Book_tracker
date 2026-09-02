@@ -44,6 +44,7 @@ builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>(
             new Uri("https://www.googleapis.com/books/v1/");
     });
 builder.Services.AddScoped<IUserBookService, UserBookService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 var app = builder.Build();
 

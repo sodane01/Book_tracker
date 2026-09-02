@@ -196,6 +196,86 @@ namespace Book_tracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(
+            ProfileViewModel model)
+        {
+            var user =
+                await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Challenge();
+            }
+
+            ModelState.Clear();
+
+            if (string.IsNullOrWhiteSpace(model.CurrentPassword))
+            {
+                ModelState.AddModelError(
+                    nameof(model.CurrentPassword),
+                    "Current password is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                ModelState.AddModelError(
+                    nameof(model.NewPassword),
+                    "New password is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            {
+                ModelState.AddModelError(
+                    nameof(model.ConfirmPassword),
+                    "Confirm new password is required.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.NewPassword) &&
+                !string.IsNullOrWhiteSpace(model.ConfirmPassword) &&
+                model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError(
+                    nameof(model.ConfirmPassword),
+                    "The new password and confirmation password do not match.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var viewModel =
+                    await BuildProfileViewModelAsync(user);
+
+                return View("Index", viewModel);
+            }
+
+            var result =
+                await _userManager.ChangePasswordAsync(
+                    user,
+                    model.CurrentPassword!,
+                    model.NewPassword!);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        nameof(model.NewPassword),
+                        error.Description);
+                }
+
+                var viewModel =
+                    await BuildProfileViewModelAsync(user);
+
+                return View("Index", viewModel);
+            }
+
+            TempData["ProfileMessage"] =
+                "Password changed successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private async Task<ProfileViewModel>
             BuildProfileViewModelAsync(
                 ApplicationUser user)

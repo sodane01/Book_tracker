@@ -1,16 +1,20 @@
 ﻿using Book_tracker.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Book_tracker.Controllers
 {
     public class BookController : Controller
     {
         private readonly IGoogleBooksService _googleBooksService;
+        private readonly IReviewService _reviewService;
 
         public BookController(
-            IGoogleBooksService googleBooksService)
+            IGoogleBooksService googleBooksService,
+            IReviewService reviewService)
         {
             _googleBooksService = googleBooksService;
+            _reviewService = reviewService;
         }
 
         [HttpGet]
@@ -28,6 +32,16 @@ namespace Book_tracker.Controllers
             {
                 return NotFound();
             }
+
+            var currentUserId =
+                User.Identity?.IsAuthenticated == true
+                    ? User.FindFirstValue(ClaimTypes.NameIdentifier)
+                    : null;
+
+            book.Reviews =
+                await _reviewService.GetReviewsForBookAsync(
+                    id,
+                    currentUserId);
 
             return View(book);
         }

@@ -17,5 +17,7 @@
         public string? PublishedDate { get; set; }
 
         public double? AverageRating { get; set; }
+
+        public List<ReviewViewModel> Reviews { get; set; } = new();
     }
 }

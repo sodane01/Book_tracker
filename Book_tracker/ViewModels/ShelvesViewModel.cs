@@ -1,4 +1,6 @@
-﻿namespace Book_tracker.ViewModels
+﻿using Book_tracker.Models.Enums;
+
+namespace Book_tracker.ViewModels
 {
     public class ShelvesViewModel
     {
@@ -32,5 +34,9 @@
         public string? Author { get; set; }
 
         public string? CoverImageUrl { get; set; }
+
+        public ReadingStatus ReadingStatus { get; set; }
+
+        public bool IsFavourite { get; set; }
     }
 }

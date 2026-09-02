@@ -34,149 +34,121 @@
 
         </div>
     }
+    else
+    {
+        <!-- Want to Read -->
+        <section class="mb-5"
+                 aria-labelledby="want-to-read-heading">
 
-    <section class="mb-5"
-             aria-labelledby="want-to-read-heading">
+            <h2 id="want-to-read-heading">
+                Want to Read
+            </h2>
 
-        <h2 id="want-to-read-heading">
-            Want to Read
-        </h2>
+            @if (Model.WantToReadBooks.Any())
+            {
+                <div class="row g-4 mt-1">
 
-        @if (Model.WantToReadBooks.Any())
-        {
-            <div class="row g-4 mt-1">
+                    @foreach (var book in Model.WantToReadBooks)
+                    {
+                        <div class="col-12 col-md-6 col-xl-4">
 
-                @foreach (var book in Model.WantToReadBooks)
-                {
-                    <div class="col-12 col-sm-6 col-lg-4">
-
-                        <div class="card h-100">
-
-                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
-                            {
-                                <img src="@book.CoverImageUrl"
-                                     class="card-img-top"
-                                     alt="Cover for @book.Title" />
-                            }
-
-                            <div class="card-body">
-
-                                <h3 class="h5 card-title">
-                                    @book.Title
-                                </h3>
-
-                                <p class="card-text text-muted">
-                                    @(string.IsNullOrWhiteSpace(book.Author)
-                                        ? "Unknown author"
-                                        : book.Author)
-                                </p>
-
-                            </div>
+                            <partial name="_ShelfBookCard"
+                                     model="book" />
 
                         </div>
+                    }
 
-                    </div>
-                }
+                </div>
+            }
+            else
+            {
+                <div class="home-empty-state mt-3">
 
-            </div>
-        }
+                    <p class="mb-0">
+                        No books here yet.
+                        Add a book from Discover to start your reading list.
+                    </p>
 
-    </section>
+                </div>
+            }
 
-    <section class="mb-5"
-             aria-labelledby="currently-reading-heading">
+        </section>
 
-        <h2 id="currently-reading-heading">
-            Currently Reading
-        </h2>
+        <!-- Currently Reading -->
+        <section class="mb-5"
+                 aria-labelledby="currently-reading-heading">
 
-        @if (Model.CurrentlyReadingBooks.Any())
-        {
-            <div class="row g-4 mt-1">
+            <h2 id="currently-reading-heading">
+                Currently Reading
+            </h2>
 
-                @foreach (var book in Model.CurrentlyReadingBooks)
-                {
-                    <div class="col-12 col-sm-6 col-lg-4">
+            @if (Model.CurrentlyReadingBooks.Any())
+            {
+                <div class="row g-4 mt-1">
 
-                        <div class="card h-100">
+                    @foreach (var book in Model.CurrentlyReadingBooks)
+                    {
+                        <div class="col-12 col-md-6 col-xl-4">
 
-                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
-                            {
-                                <img src="@book.CoverImageUrl"
-                                     class="card-img-top"
-                                     alt="Cover for @book.Title" />
-                            }
-
-                            <div class="card-body">
-
-                                <h3 class="h5 card-title">
-                                    @book.Title
-                                </h3>
-
-                                <p class="card-text text-muted">
-                                    @(string.IsNullOrWhiteSpace(book.Author)
-                                        ? "Unknown author"
-                                        : book.Author)
-                                </p>
-
-                            </div>
+                            <partial name="_ShelfBookCard"
+                                     model="book" />
 
                         </div>
+                    }
 
-                    </div>
-                }
+                </div>
+            }
+            else
+            {
+                <div class="home-empty-state mt-3">
 
-            </div>
-        }
+                    <p class="mb-0">
+                        No books here yet.
+                        Move a book here when you start reading it.
+                    </p>
 
-    </section>
+                </div>
+            }
 
-    <section class="mb-5"
-             aria-labelledby="read-heading">
+        </section>
 
-        <h2 id="read-heading">
-            Read
-        </h2>
+        <!-- Read -->
+        <section class="mb-5"
+                 aria-labelledby="read-heading">
 
-        @if (Model.ReadBooks.Any())
-        {
-            <div class="row g-4 mt-1">
+            <h2 id="read-heading">
+                Read
+            </h2>
 
-                @foreach (var book in Model.ReadBooks)
-                {
-                    <div class="col-12 col-sm-6 col-lg-4">
+            @if (Model.ReadBooks.Any())
+            {
+                <div class="row g-4 mt-1">
 
-                        <div class="card h-100">
+                    @foreach (var book in Model.ReadBooks)
+                    {
+                        <div class="col-12 col-md-6 col-xl-4">
 
-                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
-                            {
-                                <img src="@book.CoverImageUrl"
-                                     class="card-img-top"
-                                     alt="Cover for @book.Title" />
-                            }
-
-                            <div class="card-body">
-
-                                <h3 class="h5 card-title">
-                                    @book.Title
-                                </h3>
-
-                                <p class="card-text text-muted">
-                                    @(string.IsNullOrWhiteSpace(book.Author)
-                                        ? "Unknown author"
-                                        : book.Author)
-                                </p>
-
-                            </div>
+                            <partial name="_ShelfBookCard"
+                                     model="book" />
 
                         </div>
+                    }
 
-                    </div>
-                }
+                </div>
+            }
+            else
+            {
+                <div class="home-empty-state mt-3">
 
-            </div>
-        }
+                    <p class="mb-0">
+                        No books here yet.
+                        Books you finish will appear here.
+                    </p>
 
-    </section>
+                </div>
+            }
+
+        </section>
+    }
 
 </div>

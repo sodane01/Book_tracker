@@ -18,7 +18,6 @@ namespace Book_tracker.Controllers
         }
 
         [HttpGet]
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var userId =
@@ -105,8 +104,104 @@ namespace Book_tracker.Controllers
                 });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeStatus(
+            int userBookId,
+            Models.Enums.ReadingStatus readingStatus)
+        {
+            var userId =
+                User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            if (!Enum.IsDefined(
+                typeof(Models.Enums.ReadingStatus),
+                readingStatus))
+            {
+                return BadRequest();
+            }
+
+            var success =
+                await _userBookService.ChangeReadingStatusAsync(
+                    userId,
+                    userBookId,
+                    readingStatus);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            TempData["ShelfMessage"] =
+                $"Reading status changed to {GetShelfDisplayName(readingStatus)}.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleFavourite(
+            int userBookId)
+        {
+            var userId =
+                User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            var success =
+                await _userBookService.ToggleFavouriteAsync(
+                    userId,
+                    userBookId);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            TempData["ShelfMessage"] =
+                "Favourite status updated.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(
+            int userBookId)
+        {
+            var userId =
+                User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            var success =
+                await _userBookService.RemoveUserBookAsync(
+                    userId,
+                    userBookId);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            TempData["ShelfMessage"] =
+                "Book removed from your shelves.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private static ShelfBookViewModel CreateShelfBookViewModel(
-    Models.UserBook userBook)
+            Models.UserBook userBook)
         {
             return new ShelfBookViewModel
             {
@@ -115,9 +210,12 @@ namespace Book_tracker.Controllers
                 ExternalBookId = userBook.Book.ExternalBookId,
                 Title = userBook.Book.Title,
                 Author = userBook.Book.AuthorDisplay,
-                CoverImageUrl = userBook.Book.CoverImageUrl
+                CoverImageUrl = userBook.Book.CoverImageUrl,
+                ReadingStatus = userBook.ReadingStatus,
+                IsFavourite = userBook.IsFavourite
             };
         }
+
         private static string GetShelfDisplayName(
             Models.Enums.ReadingStatus readingStatus)
         {

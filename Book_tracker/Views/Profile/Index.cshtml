@@ -1,0 +1,327 @@
+﻿@using Book_tracker.Models.Enums
+@model Book_tracker.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+
+        <h1>
+            My Profile
+        </h1>
+
+        <p class="text-muted">
+            Manage your account, reading activity and settings.
+        </p>
+
+    </div>
+
+    @if (TempData["ProfileMessage"] != null)
+    {
+        <div class="alert alert-success"
+             role="alert">
+
+            @TempData["ProfileMessage"]
+
+        </div>
+    }
+
+    @if (TempData["ProfileError"] != null)
+    {
+        <div class="alert alert-danger"
+             role="alert">
+
+            @TempData["ProfileError"]
+
+        </div>
+    }
+
+    <div class="row g-4">
+
+        <div class="col-12 col-lg-6">
+
+            <section class="card h-100">
+
+                <div class="card-body">
+
+                    <h2 class="h4">
+                        Account Information
+                    </h2>
+
+                    <form asp-action="UpdateAccount"
+                          method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input class="form-control"
+                                   value="@Model.Username"
+                                   readonly />
+
+                            <div class="form-text">
+                                Username currently follows your email address.
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Email"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Save Changes
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <div class="col-12 col-lg-6">
+
+            <section class="card h-100">
+
+                <div class="card-body">
+
+                    <h2 class="h4">
+                        Reading Statistics
+                    </h2>
+
+                    <div class="row g-3 mt-1">
+
+                        <div class="col-6">
+
+                            <div class="border rounded p-3 text-center h-100">
+
+                                <div class="fs-2 fw-bold">
+                                    @Model.BooksRead
+                                </div>
+
+                                <div class="text-muted">
+                                    Books Read
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-6">
+
+                            <div class="border rounded p-3 text-center h-100">
+
+                                <div class="fs-2 fw-bold">
+                                    @Model.PagesRead
+                                </div>
+
+                                <div class="text-muted">
+                                    Pages Read
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <div class="col-12 col-lg-6">
+
+            <section class="card h-100">
+
+                <div class="card-body">
+
+                    <h2 class="h4">
+                        Favourite Books
+                    </h2>
+
+                    @if (Model.FavouriteBooks.Count == 0)
+                    {
+                        <p class="text-muted mb-0">
+                            You haven't added any favourite books yet.
+                        </p>
+                    }
+                    else
+                    {
+                        <div class="row g-3">
+
+                            @foreach (var book in Model.FavouriteBooks)
+                            {
+                                <div class="col-12">
+
+                                    <article class="border rounded p-3">
+
+                                        <div class="d-flex gap-3 align-items-start">
+
+                                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
+                                            {
+                                                <img src="@book.CoverImageUrl"
+                                                     alt="Cover of @book.Title"
+                                                     class="rounded"
+                                                     style="width: 70px; height: 105px; object-fit: cover;" />
+                                            }
+
+                                            <div class="flex-grow-1">
+
+                                                <h3 class="h6 mb-1">
+                                                    @book.Title
+                                                </h3>
+
+                                                @if (!string.IsNullOrWhiteSpace(book.Author))
+                                                {
+                                                    <p class="text-muted mb-2">
+                                                        @book.Author
+                                                    </p>
+                                                }
+
+                                                <div class="d-flex flex-wrap gap-2">
+
+                                                    <a asp-controller="Discover"
+                                                       asp-action="Details"
+                                                       asp-route-id="@book.ExternalBookId"
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        View Details
+                                                    </a>
+
+                                                    <form asp-controller="Profile"
+                                                          asp-action="ToggleFavourite"
+                                                          method="post"
+                                                          class="d-inline">
+
+                                                        <input type="hidden"
+                                                               name="userBookId"
+                                                               value="@book.UserBookId" />
+
+                                                        <button type="submit"
+                                                                class="btn btn-sm btn-outline-danger">
+                                                            Remove Favourite
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </article>
+
+                                </div>
+                            }
+
+                        </div>
+                    }
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <div class="col-12 col-lg-6">
+
+            <section class="card h-100">
+
+                <div class="card-body">
+
+                    <h2 class="h4">
+                        Settings
+                    </h2>
+
+                    <p class="text-muted">
+                        Choose how Book Tracker should look.
+                    </p>
+
+                    <form asp-action="UpdateTheme"
+                          method="post">
+
+                        <fieldset>
+
+                            <legend class="h6">
+                                Theme
+                            </legend>
+
+                            <div class="form-check mb-2">
+
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="theme"
+                                       id="themeLight"
+                                       value="@Theme.Light"
+                                       checked="@(Model.Theme == Theme.Light)" />
+
+                                <label class="form-check-label"
+                                       for="themeLight">
+                                    Light
+                                </label>
+
+                            </div>
+
+                            <div class="form-check mb-3">
+
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="theme"
+                                       id="themeDark"
+                                       value="@Theme.Dark"
+                                       checked="@(Model.Theme == Theme.Dark)" />
+
+                                <label class="form-check-label"
+                                       for="themeDark">
+                                    Dark
+                                </label>
+
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save Theme
+                            </button>
+
+                        </fieldset>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

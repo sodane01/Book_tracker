@@ -103,7 +103,7 @@ namespace Book_tracker.Services
         }
 
         public async Task<List<UserBook>> GetUserBooksAsync(
-    string userId)
+            string userId)
         {
             return await _context.UserBooks
                 .Include(userBook => userBook.Book)
@@ -143,6 +143,74 @@ namespace Book_tracker.Services
             await _context.SaveChangesAsync();
 
             return userBook;
+        }
+
+        public async Task<bool> ChangeReadingStatusAsync(
+            string userId,
+            int userBookId,
+            ReadingStatus readingStatus)
+        {
+            var userBook = await _context.UserBooks
+                .FirstOrDefaultAsync(
+                    userBook =>
+                        userBook.Id == userBookId &&
+                        userBook.UserId == userId);
+
+            if (userBook == null)
+            {
+                return false;
+            }
+
+            userBook.ReadingStatus = readingStatus;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ToggleFavouriteAsync(
+            string userId,
+            int userBookId)
+        {
+            var userBook = await _context.UserBooks
+                .FirstOrDefaultAsync(
+                    userBook =>
+                        userBook.Id == userBookId &&
+                        userBook.UserId == userId);
+
+            if (userBook == null)
+            {
+                return false;
+            }
+
+            userBook.IsFavourite =
+                !userBook.IsFavourite;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> RemoveUserBookAsync(
+            string userId,
+            int userBookId)
+        {
+            var userBook = await _context.UserBooks
+                .FirstOrDefaultAsync(
+                    userBook =>
+                        userBook.Id == userBookId &&
+                        userBook.UserId == userId);
+
+            if (userBook == null)
+            {
+                return false;
+            }
+
+            _context.UserBooks.Remove(userBook);
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

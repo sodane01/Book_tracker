@@ -1,8 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Book_tracker.Models
+@using Book_tracker.Models.Enums
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
     <title>@ViewData["Title"] - Book Tracker</title>
 
@@ -20,12 +26,31 @@
           asp-append-version="true" />
 </head>
 
-<body>
+@{
+    var currentTheme = Theme.Light;
+
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+
+        if (currentUser != null)
+        {
+            currentTheme = currentUser.Theme;
+        }
+    }
+
+    var bodyThemeClass =
+        currentTheme == Theme.Dark
+            ? "bt-theme-dark"
+            : "bt-theme-light";
+}
+
+<body class="@bodyThemeClass">
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
             <div class="container-fluid">
 
-                <!-- Brand -->
                 <a class="navbar-brand"
                    asp-area=""
                    asp-controller="Home"
@@ -33,7 +58,6 @@
                     Book Tracker
                 </a>
 
-                <!-- Mobile menu button -->
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
@@ -47,10 +71,8 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
-                    <!-- Main navigation -->
                     <ul class="navbar-nav flex-grow-1">
 
-                        <!-- Available to everyone -->
                         <li class="nav-item">
                             <a class="nav-link"
                                asp-area=""
@@ -69,7 +91,6 @@
                             </a>
                         </li>
 
-                        <!-- Available only to authenticated users -->
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
@@ -99,7 +120,6 @@
                                 </a>
                             </li>
 
-                            <!-- Available only to Admin -->
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
@@ -112,9 +132,9 @@
                                 </li>
                             }
                         }
+
                     </ul>
 
-                    <!-- Register / Login / Logout -->
                     <partial name="_LoginPartial" />
 
                 </div>
@@ -123,8 +143,11 @@
     </header>
 
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main"
+              class="pb-3">
+
             @RenderBody()
+
         </main>
     </div>
 
@@ -143,5 +166,6 @@
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

@@ -1184,3 +1184,113 @@ p {
             margin: 0;
         }
 }
+/* ========================================
+   Navbar - responsive authenticated user
+======================================== */
+
+@media (max-width: 768px) {
+
+    .navbar .container-fluid,
+    .navbar .container {
+        flex-wrap: wrap;
+        row-gap: 0.75rem;
+    }
+
+    .navbar-nav {
+        flex-wrap: wrap;
+    }
+
+    .navbar .navbar-text {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+}
+/* ========================================
+   PROFILE-06 - Dark Theme
+======================================== */
+
+body.bt-theme-dark {
+    --bt-bg: #171a18;
+    --bt-surface: #222724;
+    --bt-text: #f1f3f1;
+    --bt-text-muted: #b7bfba;
+    --bt-primary: #a9c8b3;
+    --bt-primary-hover: #c0dac7;
+    --bt-primary-soft: #2d3931;
+    --bt-accent-warm: #3b332b;
+    --bt-accent-blue: #2d343d;
+    --bt-border: #3b433e;
+    --bt-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+    background-color: var(--bt-bg);
+    color: var(--bt-text);
+}
+
+    body.bt-theme-dark .navbar {
+        background-color: rgba(34, 39, 36, 0.96) !important;
+        border-color: var(--bt-border) !important;
+    }
+
+    body.bt-theme-dark .card,
+    body.bt-theme-dark .modal-content,
+    body.bt-theme-dark .form-control,
+    body.bt-theme-dark .form-select {
+        background-color: var(--bt-surface);
+        color: var(--bt-text);
+        border-color: var(--bt-border);
+    }
+
+        body.bt-theme-dark .form-control[readonly] {
+            background-color: #2b302d;
+            color: var(--bt-text-muted);
+        }
+
+    body.bt-theme-dark .text-muted,
+    body.bt-theme-dark .form-text {
+        color: var(--bt-text-muted) !important;
+    }
+
+    body.bt-theme-dark .border {
+        border-color: var(--bt-border) !important;
+    }
+
+    body.bt-theme-dark .book-result-shelf {
+        background-color: var(--bt-surface);
+        border-color: var(--bt-border);
+    }
+
+        body.bt-theme-dark .book-result-shelf .form-label,
+        body.bt-theme-dark .discover-sort .form-label {
+            color: var(--bt-text);
+        }
+
+        body.bt-theme-dark .book-result-shelf .form-select {
+            background-color: var(--bt-surface);
+            color: var(--bt-text);
+            border-color: var(--bt-border);
+        }
+
+    body.bt-theme-dark .home-empty-state {
+        background-color: var(--bt-surface);
+        border-color: var(--bt-border);
+    }
+
+    body.bt-theme-dark .book-result-cover,
+    body.bt-theme-dark .book-cover-placeholder,
+    body.bt-theme-dark .book-details-cover .book-cover-placeholder {
+        background-color: #2b302d;
+    }
+
+    body.bt-theme-dark .footer {
+        background-color: var(--bt-bg);
+    }
+
+    body.bt-theme-dark .btn-outline-danger {
+        color: #f0a6ad;
+        border-color: #c86670;
+    }
+
+        body.bt-theme-dark .btn-outline-danger:hover,
+        body.bt-theme-dark .btn-outline-danger:focus {
+            background-color: #c86670;
+            color: #ffffff;
+        }

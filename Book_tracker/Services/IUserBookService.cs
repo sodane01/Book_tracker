@@ -25,5 +25,18 @@ namespace Book_tracker.Services
             string userId,
             Book book,
             ReadingStatus readingStatus);
+
+        Task<bool> ChangeReadingStatusAsync(
+            string userId,
+            int userBookId,
+            ReadingStatus readingStatus);
+
+        Task<bool> ToggleFavouriteAsync(
+            string userId,
+            int userBookId);
+
+        Task<bool> RemoveUserBookAsync(
+            string userId,
+            int userBookId);
     }
 }

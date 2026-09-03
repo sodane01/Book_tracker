@@ -7,12 +7,15 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>@ViewData["Title"] - Book Tracker</title>
 
     <script type="importmap"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -47,15 +50,17 @@
 
 <body class="@bodyThemeClass">
 
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+    <header class="bt-site-header">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bt-navbar">
+            <div class="container">
 
-                <a class="navbar-brand"
+                <a class="navbar-brand bt-brand"
                    asp-area=""
                    asp-controller="Home"
-                   asp-action="Index">
-                    Book Tracker
+                   asp-action="Index"
+                   aria-label="Book Tracker home">
+                    <span class="bt-brand-mark" aria-hidden="true">★</span>
+                    <span>Book Tracker</span>
                 </a>
 
                 <button class="navbar-toggler"
@@ -65,14 +70,12 @@
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
                         aria-label="Toggle navigation">
-
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
-                    <ul class="navbar-nav flex-grow-1">
-
+                    <ul class="navbar-nav flex-grow-1 bt-main-nav">
                         <li class="nav-item">
                             <a class="nav-link"
                                asp-area=""
@@ -132,38 +135,36 @@
                                 </li>
                             }
                         }
-
                     </ul>
 
-                    <partial name="_LoginPartial" />
+                    <div class="bt-account-nav">
+                        <partial name="_LoginPartial" />
+                    </div>
 
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main"
-              class="pb-3">
-
+    <div class="container bt-page-shell">
+        <main role="main" class="pb-3">
             @RenderBody()
-
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Book Tracker
+    <footer class="footer bt-footer">
+        <div class="container bt-footer-inner">
+            <span class="bt-footer-star" aria-hidden="true">★</span>
+            <span>Book Tracker</span>
+            <span class="bt-footer-copy">
+                &copy; 2026 · Your little corner of the book world.
+            </span>
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/js/site.js"
-            asp-append-version="true">
-    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

@@ -4,85 +4,131 @@
     ViewData["Title"] = "Home";
 }
 
-<div>
+<div class="cozy-home">
     @if (Model.IsAuthenticated)
     {
-        <section class="user-home-header">
-            <p class="home-eyebrow">Your reading dashboard</p>
+        <section class="cozy-user-hero">
+            <div class="cozy-user-hero-copy">
+                <p class="home-eyebrow">
+                    <span aria-hidden="true">★</span> Your reading corner
+                </p>
 
-            <h1>Welcome back!</h1>
+                <h1>Welcome back, <span>@Model.UserName</span>.</h1>
 
-            <p class="user-home-welcome">
-                Signed in as <strong>@Model.UserName</strong>
-            </p>
+                <p class="cozy-lead">
+                    Your shelves are waiting. Pick up a story, find something new,
+                    or simply admire your excellent taste in books.
+                </p>
+
+                <div class="home-hero-actions">
+                    <a asp-controller="Discover"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Discover books
+                    </a>
+
+                    <a asp-controller="Shelves"
+                       asp-action="Index"
+                       class="btn btn-outline-primary">
+                        My shelves
+                    </a>
+                </div>
+            </div>
+
+            <div class="cozy-quote-card" aria-hidden="true">
+                <span class="cozy-quote-star">★</span>
+                <p>One more chapter is a perfectly reasonable life choice.</p>
+                <span class="cozy-quote-line"></span>
+            </div>
         </section>
 
-        <section class="reading-overview">
-            <div class="home-section-heading">
-                <h2>Your reading overview</h2>
-                <p>A quick look at your Book Tracker activity.</p>
+        <section class="reading-overview cozy-section">
+            <div class="home-section-heading cozy-heading-row">
+                <div>
+                    <p class="home-eyebrow">At a glance</p>
+                    <h2>Your reading life</h2>
+                    <p>A little snapshot of what is happening on your shelves.</p>
+                </div>
+
+                <span class="cozy-heading-star" aria-hidden="true">★</span>
             </div>
 
             <div class="stat-card-grid">
-                <article class="stat-card">
+                <article class="stat-card cozy-stat-card">
+                    <span class="stat-icon" aria-hidden="true">☕</span>
                     <span class="stat-value">@Model.CurrentlyReadingCount</span>
                     <span class="stat-label">Currently reading</span>
                 </article>
 
-                <article class="stat-card">
+                <article class="stat-card cozy-stat-card">
+                    <span class="stat-icon" aria-hidden="true">✓</span>
                     <span class="stat-value">@Model.BooksReadCount</span>
                     <span class="stat-label">Books read</span>
                 </article>
 
-                <article class="stat-card">
+                <article class="stat-card cozy-stat-card">
+                    <span class="stat-icon" aria-hidden="true">♥</span>
                     <span class="stat-value">@Model.FavouriteBooksCount</span>
                     <span class="stat-label">Favourites</span>
                 </article>
 
-                <article class="stat-card">
+                <article class="stat-card cozy-stat-card">
+                    <span class="stat-icon" aria-hidden="true">✦</span>
                     <span class="stat-value">@Model.UnreadNotificationCount</span>
                     <span class="stat-label">Unread notifications</span>
                 </article>
             </div>
         </section>
 
-        <section class="currently-reading-section">
+        <section class="currently-reading-section cozy-section">
             <div class="home-section-heading">
+                <p class="home-eyebrow">Current chapter</p>
                 <h2>Currently reading</h2>
                 <p>Pick up where you left off.</p>
             </div>
 
             @if (Model.CurrentlyReadingCount == 0)
             {
-                <div class="home-empty-state">
-                    <h3>No books in progress yet</h3>
+                <div class="home-empty-state cozy-empty-state">
+                    <div class="cozy-empty-icon" aria-hidden="true">☾</div>
 
-                    <p>
-                        When you start reading a book, it will appear here
-                        so you can quickly continue your reading journey.
-                    </p>
+                    <div>
+                        <h3>No books in progress yet</h3>
 
-                    <a asp-controller="Discover"
-                       asp-action="Index"
-                       class="btn btn-primary">
-                        Discover a book
-                    </a>
+                        <p>
+                            Your next favourite story could be one search away.
+                            Start a book and it will appear here.
+                        </p>
+
+                        <a asp-controller="Discover"
+                           asp-action="Index"
+                           class="btn btn-primary">
+                            Find my next read
+                        </a>
+                    </div>
                 </div>
             }
         </section>
     }
     else
     {
-        <section class="home-hero">
+        <section class="home-hero cozy-guest-hero">
+            <div class="cozy-hero-shape" aria-hidden="true"></div>
+
             <div class="home-hero-content">
                 <div class="home-hero-copy">
-                    <p class="home-eyebrow">Your personal reading space</p>
+                    <p class="home-eyebrow">
+                        <span aria-hidden="true">★</span>
+                        Your little corner of the book world
+                    </p>
 
-                    <h1>Discover, track and enjoy your next great read.</h1>
+                    <h1>
+                        Find your next <em>favourite story.</em>
+                    </h1>
 
                     <p class="home-hero-text">
-                        Search for books, build your reading shelves,
-                        save favourites and keep track of what you are reading.
+                        Discover books, build your shelves, save the ones you love
+                        and keep your reading life beautifully organized.
                     </p>
 
                     <div class="home-hero-actions">
@@ -95,57 +141,100 @@
                         <a asp-area="Identity"
                            asp-page="/Account/Register"
                            class="btn btn-outline-primary">
-                            Create account
+                            Create your reading corner
                         </a>
                     </div>
                 </div>
 
-                <div class="home-book-visual" aria-hidden="true">
-                    <div class="decorative-book book-one"></div>
-                    <div class="decorative-book book-two"></div>
-                    <div class="decorative-book book-three"></div>
+                <div class="home-book-visual cozy-book-stack" aria-hidden="true">
+                    <span class="floating-star floating-star-one">★</span>
+                    <span class="floating-star floating-star-two">✦</span>
+
+                    <div class="decorative-book book-one">
+                        <span>stories</span>
+                    </div>
+
+                    <div class="decorative-book book-two">
+                        <span>chapters</span>
+                    </div>
+
+                    <div class="decorative-book book-three">
+                        <span>favourites</span>
+                    </div>
+
+                    <div class="cozy-mug">☕</div>
                 </div>
             </div>
         </section>
 
-        <section class="home-features">
-            <div class="home-section-heading">
-                <h2>Everything you need to keep your reading organized</h2>
+        <section class="home-features cozy-section cozy-feature-section">
+            <div class="home-section-heading cozy-heading-row">
+                <div>
+                    <p class="home-eyebrow">Made for book people</p>
 
-                <p>
-                    Start exploring immediately. Create an account when you want
-                    to save books and track your reading.
-                </p>
+                    <h2>A calmer way to keep track of your reading</h2>
+
+                    <p>
+                        Browse freely now. Create an account when you want to turn
+                        all those “I should read that” thoughts into actual shelves.
+                    </p>
+                </div>
+
+                <span class="cozy-heading-star" aria-hidden="true">★</span>
             </div>
 
             <div class="home-feature-grid">
-                <article class="home-feature-card">
+                <article class="home-feature-card cozy-feature-card">
+                    <span class="feature-number">01</span>
+                    <span class="feature-icon" aria-hidden="true">⌕</span>
+
                     <h3>Discover books</h3>
 
                     <p>
-                        Search for books and explore titles, authors,
-                        covers and book details.
+                        Search for titles and authors, browse covers and open the
+                        details that make you want to read just one more book.
                     </p>
                 </article>
 
-                <article class="home-feature-card">
+                <article class="home-feature-card cozy-feature-card">
+                    <span class="feature-number">02</span>
+                    <span class="feature-icon" aria-hidden="true">▤</span>
+
                     <h3>Build your shelves</h3>
 
                     <p>
-                        Keep track of books you want to read,
-                        are currently reading or have finished.
+                        Keep Want to Read, Currently Reading and Read books together
+                        in your own personal library.
                     </p>
                 </article>
 
-                <article class="home-feature-card">
-                    <h3>Keep your favourites</h3>
+                <article class="home-feature-card cozy-feature-card">
+                    <span class="feature-number">03</span>
+                    <span class="feature-icon" aria-hidden="true">♥</span>
+
+                    <h3>Keep the favourites</h3>
 
                     <p>
-                        Save favourite books and create your own
-                        personal reading collection.
+                        Save the books that deserve a permanent little place in your
+                        reading heart.
                     </p>
                 </article>
             </div>
+        </section>
+
+        <section class="cozy-closing-banner">
+            <span class="cozy-closing-star" aria-hidden="true">★</span>
+
+            <div>
+                <p class="home-eyebrow">Never wonder what to read again</p>
+                <h2>Your next chapter starts here.</h2>
+            </div>
+
+            <a asp-controller="Discover"
+               asp-action="Index"
+               class="btn btn-primary">
+                Browse books
+            </a>
         </section>
     }
 </div>

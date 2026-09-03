@@ -1,9 +1,10 @@
 ﻿@using Book_tracker.Models.Enums
 @model Book_tracker.ViewModels.ShelfBookViewModel
 
-<article class="book-result-card">
+<article class="cozy-shelf-book-card @(Model.IsFavourite ? "is-favourite" : "")">
 
-    <div class="book-result-cover">
+    <!-- Cover -->
+    <div class="cozy-shelf-book-cover">
 
         @if (!string.IsNullOrWhiteSpace(Model.CoverImageUrl))
         {
@@ -12,10 +13,11 @@
         }
         else
         {
-            <div class="book-cover-placeholder">
+            <div class="book-cover-placeholder cozy-shelf-cover-placeholder">
 
-                <span aria-hidden="true">
-                    📖
+                <span class="cozy-cover-star"
+                      aria-hidden="true">
+                    ★
                 </span>
 
                 <span>
@@ -25,47 +27,71 @@
             </div>
         }
 
+
+        @if (Model.IsFavourite)
+        {
+            <span class="cozy-favourite-badge"
+                  aria-label="Favourite book">
+                ♥
+            </span>
+        }
+
     </div>
 
-    <div class="book-result-card-content">
 
-        <h3 class="book-result-title">
-            @Model.Title
-        </h3>
+    <!-- Book content -->
+    <div class="cozy-shelf-book-content">
 
-        <p class="book-result-author">
-            @(string.IsNullOrWhiteSpace(Model.Author)
-                ? "Unknown author"
-                : Model.Author)
-        </p>
+        <div class="cozy-shelf-book-heading">
 
+            <h3>
+                @Model.Title
+            </h3>
+
+            <p>
+                @(string.IsNullOrWhiteSpace(Model.Author)
+                    ? "Unknown author"
+                    : Model.Author)
+            </p>
+
+        </div>
+
+
+        <!-- Favourite -->
         <form asp-controller="Shelves"
               asp-action="ToggleFavourite"
               method="post"
-              class="mt-3">
+              class="cozy-favourite-form">
 
             <input type="hidden"
                    name="userBookId"
                    value="@Model.UserBookId" />
 
             <button type="submit"
-                    class="btn @(Model.IsFavourite ? "btn-danger" : "btn-outline-danger")"
+                    class="cozy-favourite-button @(Model.IsFavourite ? "active" : "")"
                     aria-pressed="@Model.IsFavourite.ToString().ToLower()">
 
-                <span aria-hidden="true">
+                <span class="cozy-heart"
+                      aria-hidden="true">
                     @(Model.IsFavourite ? "♥" : "♡")
                 </span>
 
-                @(Model.IsFavourite ? "Favourite" : "Add to favourites")
+                <span>
+                    @(Model.IsFavourite
+                        ? "Favourite"
+                        : "Add to favourites")
+                </span>
 
             </button>
 
         </form>
 
+
+        <!-- Reading status -->
         <form asp-controller="Shelves"
               asp-action="ChangeStatus"
               method="post"
-              class="mt-3">
+              class="cozy-status-form">
 
             <input type="hidden"
                    name="userBookId"
@@ -76,40 +102,47 @@
                 Reading status
             </label>
 
-            <select asp-for="ReadingStatus"
-                    id="reading-status-@Model.UserBookId"
-                    name="readingStatus"
-                    class="form-select">
+            <div class="cozy-status-controls">
 
-                <option value="@ReadingStatus.WantToRead">
-                    Want to Read
-                </option>
+                <select asp-for="ReadingStatus"
+                        id="reading-status-@Model.UserBookId"
+                        name="readingStatus"
+                        class="form-select">
 
-                <option value="@ReadingStatus.CurrentlyReading">
-                    Currently Reading
-                </option>
+                    <option value="@ReadingStatus.WantToRead">
+                        Want to Read
+                    </option>
 
-                <option value="@ReadingStatus.Read">
-                    Read
-                </option>
+                    <option value="@ReadingStatus.CurrentlyReading">
+                        Currently Reading
+                    </option>
 
-            </select>
+                    <option value="@ReadingStatus.Read">
+                        Read
+                    </option>
 
-            <button type="submit"
-                    class="btn btn-primary mt-2">
-                Update status
-            </button>
+                </select>
+
+                <button type="submit"
+                        class="btn btn-primary btn-sm">
+                    Update
+                </button>
+
+            </div>
 
         </form>
 
-        <div class="d-flex flex-wrap gap-2 mt-3">
+
+        <!-- Actions -->
+        <div class="cozy-shelf-book-actions">
 
             <a asp-controller="Book"
                asp-action="Details"
                asp-route-id="@Model.ExternalBookId"
-               class="btn btn-outline-primary book-result-details">
+               class="btn btn-outline-primary">
                 View details
             </a>
+
 
             <form asp-controller="Shelves"
                   asp-action="Remove"

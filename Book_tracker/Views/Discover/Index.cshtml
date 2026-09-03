@@ -5,26 +5,60 @@
     ViewData["Title"] = "Discover";
 }
 
-<div class="discover-page">
+<div class="discover-page cozy-discover">
 
     @if (TempData["ShelfMessage"] is string shelfMessage)
     {
-        <div class="alert alert-success"
+        <div class="alert alert-success cozy-alert"
              role="status">
+            <span aria-hidden="true">★</span>
             @shelfMessage
         </div>
     }
 
-    <div class="discover-header">
-        <h1>Discover Books</h1>
+    <!-- Header -->
+    <header class="cozy-discover-header">
 
-        <p class="discover-intro">
-            Search for books by title, author, genre or series.
-        </p>
-    </div>
+        <div>
+            <p class="home-eyebrow">
+                <span aria-hidden="true">★</span>
+                Explore the shelves
+            </p>
+
+            <h1>Discover your next read.</h1>
+
+            <p class="discover-intro">
+                Search by title, author, genre or series and see what catches
+                your bookish little eye.
+            </p>
+        </div>
+
+        <div class="discover-header-decoration"
+             aria-hidden="true">
+            <span class="discover-big-star">★</span>
+            <span class="discover-small-star">✦</span>
+        </div>
+
+    </header>
+
 
     <!-- Search -->
-    <section class="discover-search">
+    <section class="discover-search cozy-search-panel">
+
+        <div class="cozy-search-heading">
+            <span class="cozy-search-icon"
+                  aria-hidden="true">
+                ⌕
+            </span>
+
+            <div>
+                <h2>Find a book</h2>
+                <p>
+                    A title you forgot, an author you love, or an entirely
+                    unnecessary addition to your TBR pile.
+                </p>
+            </div>
+        </div>
 
         <form asp-controller="Discover"
               asp-action="Index"
@@ -111,12 +145,12 @@
                            type="text"
                            class="form-control"
                            value="@Model.SearchQuery"
-                           placeholder="Search books..." />
+                           placeholder="What are we reading next?" />
 
                 </div>
 
                 <button type="submit"
-                        class="btn btn-primary">
+                        class="btn btn-primary cozy-search-button">
                     Search
                 </button>
 
@@ -128,121 +162,167 @@
 
 
     <!-- Results -->
-    <section class="discover-results">
+    <section class="discover-results cozy-discover-results">
 
         @if (!Model.HasSearched)
         {
-            <div class="home-empty-state">
+            <div class="home-empty-state cozy-empty-state discover-empty-state">
 
-                <h2>Search for your next book</h2>
+                <div class="cozy-empty-icon"
+                     aria-hidden="true">
+                    ☾
+                </div>
 
-                <p>
-                    Enter a search term above to start exploring books.
-                </p>
+                <div>
+                    <p class="home-eyebrow">
+                        Your next favourite is out there
+                    </p>
+
+                    <h2>Search for your next book</h2>
+
+                    <p>
+                        Enter something above and start wandering through
+                        the virtual bookshelves.
+                    </p>
+                </div>
 
             </div>
         }
         else if (Model.HasSearchError)
         {
-            <div class="home-empty-state"
+            <div class="home-empty-state cozy-empty-state discover-empty-state"
                  role="alert">
 
-                <h2>Unable to search for books</h2>
+                <div class="cozy-empty-icon"
+                     aria-hidden="true">
+                    !
+                </div>
 
-                <p>
-                    Unable to search for books. Please try again.
-                </p>
+                <div>
+                    <h2>The shelves are being difficult</h2>
+
+                    <p>
+                        We couldn't search for books right now.
+                        Please try again.
+                    </p>
+                </div>
 
             </div>
         }
         else if (!Model.SearchResults.Any())
         {
-            <div class="home-empty-state">
+            <div class="home-empty-state cozy-empty-state discover-empty-state">
 
-                <h2>No books found</h2>
+                <div class="cozy-empty-icon"
+                     aria-hidden="true">
+                    ?
+                </div>
 
-                <p>
-                    Try another search term or search type.
-                </p>
+                <div>
+                    <h2>No books found</h2>
+
+                    <p>
+                        Apparently even the internet doesn't know that one.
+                        Try another search term or search type.
+                    </p>
+                </div>
 
             </div>
         }
         else
         {
-            <!-- Sort results -->
-            <div class="discover-sort">
+            <!-- Results heading + sort -->
+            <div class="discover-results-toolbar">
 
-                <form asp-controller="Discover"
-                      asp-action="Index"
-                      method="get">
+                <div>
+                    <p class="home-eyebrow">
+                        Books found
+                    </p>
 
-                    <input type="hidden"
-                           name="searchQuery"
-                           value="@Model.SearchQuery" />
+                    <h2>Pick something wonderful.</h2>
 
-                    <input type="hidden"
-                           name="searchType"
-                           value="@Model.SearchType" />
+                    <p>
+                        Search results for
+                        <strong>@Model.SearchQuery</strong>
+                    </p>
+                </div>
 
-                    <label for="sortType"
-                           class="form-label">
-                        Sort by
-                    </label>
 
-                    <div class="discover-sort-row">
+                <div class="discover-sort cozy-sort-panel">
 
-                        <select id="sortType"
-                                name="sortType"
-                                class="form-select">
+                    <form asp-controller="Discover"
+                          asp-action="Index"
+                          method="get">
 
-                            @if (Model.SortType == BookSortType.Title)
-                            {
-                                <option value="Title" selected>
-                                    Title
-                                </option>
-                            }
-                            else
-                            {
-                                <option value="Title">
-                                    Title
-                                </option>
-                            }
+                        <input type="hidden"
+                               name="searchQuery"
+                               value="@Model.SearchQuery" />
 
-                            @if (Model.SortType == BookSortType.Author)
-                            {
-                                <option value="Author" selected>
-                                    Author
-                                </option>
-                            }
-                            else
-                            {
-                                <option value="Author">
-                                    Author
-                                </option>
-                            }
+                        <input type="hidden"
+                               name="searchType"
+                               value="@Model.SearchType" />
 
-                        </select>
+                        <label for="sortType"
+                               class="form-label">
+                            Sort by
+                        </label>
 
-                        <button type="submit"
-                                class="btn btn-outline-primary">
-                            Sort
-                        </button>
+                        <div class="discover-sort-row">
 
-                    </div>
+                            <select id="sortType"
+                                    name="sortType"
+                                    class="form-select">
 
-                </form>
+                                @if (Model.SortType == BookSortType.Title)
+                                {
+                                    <option value="Title" selected>
+                                        Title
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="Title">
+                                        Title
+                                    </option>
+                                }
+
+                                @if (Model.SortType == BookSortType.Author)
+                                {
+                                    <option value="Author" selected>
+                                        Author
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="Author">
+                                        Author
+                                    </option>
+                                }
+
+                            </select>
+
+                            <button type="submit"
+                                    class="btn btn-outline-primary">
+                                Sort
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
 
             </div>
 
 
             <!-- Book cards -->
-            <div class="discover-result-list">
+            <div class="discover-result-list cozy-book-results">
 
                 @foreach (var book in Model.SearchResults)
                 {
-                    <article class="book-result-card">
+                    <article class="book-result-card cozy-book-card">
 
-                        <div class="book-result-cover">
+                        <div class="book-result-cover cozy-result-cover">
 
                             @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
                             {
@@ -251,10 +331,11 @@
                             }
                             else
                             {
-                                <div class="book-cover-placeholder">
+                                <div class="book-cover-placeholder cozy-cover-placeholder">
 
-                                    <span aria-hidden="true">
-                                        📖
+                                    <span class="cozy-cover-star"
+                                          aria-hidden="true">
+                                        ★
                                     </span>
 
                                     <span>
@@ -267,35 +348,40 @@
                         </div>
 
 
-                        <div class="book-result-card-content">
+                        <div class="book-result-card-content cozy-result-content">
+
+                            <div class="cozy-book-meta">
+
+                                @if (book.AverageRating.HasValue)
+                                {
+                                    <span class="cozy-rating">
+
+                                        <span aria-hidden="true">
+                                            ★
+                                        </span>
+
+                                        @book.AverageRating.Value.ToString("0.0")
+
+                                    </span>
+                                }
+
+                            </div>
+
 
                             <h2 class="book-result-title">
                                 @book.Title
                             </h2>
 
+
                             @if (!string.IsNullOrWhiteSpace(book.Author))
                             {
                                 <p class="book-result-author">
-                                    @book.Author
-                                </p>
-                            }
-
-                            @if (book.AverageRating.HasValue)
-                            {
-                                <p class="book-result-rating">
-
-                                    <span aria-hidden="true">
-                                        ★
-                                    </span>
-
-                                    @book.AverageRating.Value.ToString("0.0")
-
+                                    by @book.Author
                                 </p>
                             }
 
 
-                            <!-- View Details -->
-                            <div class="mt-3">
+                            <div class="cozy-book-card-actions">
 
                                 <a asp-controller="Book"
                                    asp-action="Details"
@@ -306,76 +392,75 @@
 
                                 </a>
 
+
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <form asp-controller="Shelves"
+                                          asp-action="Add"
+                                          method="post"
+                                          class="book-result-shelf cozy-shelf-form">
+
+                                        <input type="hidden"
+                                               name="ExternalBookId"
+                                               value="@book.ExternalBookId" />
+
+                                        <input type="hidden"
+                                               name="SearchQuery"
+                                               value="@Model.SearchQuery" />
+
+                                        <input type="hidden"
+                                               name="SearchType"
+                                               value="@Model.SearchType" />
+
+                                        <input type="hidden"
+                                               name="SortType"
+                                               value="@Model.SortType" />
+
+                                        <label for="readingStatus-@book.ExternalBookId"
+                                               class="form-label">
+                                            Add to shelf
+                                        </label>
+
+                                        <select id="readingStatus-@book.ExternalBookId"
+                                                name="ReadingStatus"
+                                                class="form-select">
+
+                                            <option value="WantToRead">
+                                                Want to Read
+                                            </option>
+
+                                            <option value="CurrentlyReading">
+                                                Currently Reading
+                                            </option>
+
+                                            <option value="Read">
+                                                Read
+                                            </option>
+
+                                        </select>
+
+                                        <button type="submit"
+                                                class="btn btn-primary">
+                                            Add to Shelf
+                                        </button>
+
+                                    </form>
+                                }
+                                else
+                                {
+                                    <div class="book-result-shelf cozy-guest-shelf">
+
+                                        <button type="button"
+                                                class="btn btn-primary guest-add-to-shelf"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#guestShelfModal">
+                                            Add to Shelf
+                                        </button>
+
+                                    </div>
+                                }
+
                             </div>
-
-
-                            <!-- Add to Shelf -->
-                            @if (User.Identity?.IsAuthenticated == true)
-                            {
-                                <form asp-controller="Shelves"
-                                      asp-action="Add"
-                                      method="post"
-                                      class="book-result-shelf mt-3">
-
-                                    <input type="hidden"
-                                           name="ExternalBookId"
-                                           value="@book.ExternalBookId" />
-
-                                    <input type="hidden"
-                                           name="SearchQuery"
-                                           value="@Model.SearchQuery" />
-
-                                    <input type="hidden"
-                                           name="SearchType"
-                                           value="@Model.SearchType" />
-
-                                    <input type="hidden"
-                                           name="SortType"
-                                           value="@Model.SortType" />
-
-                                    <label for="readingStatus-@book.ExternalBookId"
-                                           class="form-label">
-                                        Add to shelf
-                                    </label>
-
-                                    <select id="readingStatus-@book.ExternalBookId"
-                                            name="ReadingStatus"
-                                            class="form-select">
-
-                                        <option value="WantToRead">
-                                            Want to Read
-                                        </option>
-
-                                        <option value="CurrentlyReading">
-                                            Currently Reading
-                                        </option>
-
-                                        <option value="Read">
-                                            Read
-                                        </option>
-
-                                    </select>
-
-                                    <button type="submit"
-                                            class="btn btn-primary mt-2">
-                                        Add to Shelf
-                                    </button>
-
-                                </form>
-                            }
-                            else
-                            {
-                                <div class="book-result-shelf mt-3">
-
-                                    <button type="button"
-                                            class="btn btn-primary guest-add-to-shelf"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#guestShelfModal">
-                                        Add to Shelf
-                                    </button>
-
-                                </div>
-                            }
 
                         </div>
 
@@ -401,14 +486,20 @@
 
         <div class="modal-dialog modal-dialog-centered">
 
-            <div class="modal-content">
+            <div class="modal-content cozy-modal">
 
                 <div class="modal-header">
 
-                    <h2 class="modal-title fs-5"
-                        id="guestShelfModalLabel">
-                        Save books to your shelves
-                    </h2>
+                    <div>
+                        <p class="home-eyebrow">
+                            Keep this one
+                        </p>
+
+                        <h2 class="modal-title fs-5"
+                            id="guestShelfModalLabel">
+                            Save books to your shelves
+                        </h2>
+                    </div>
 
                     <button type="button"
                             class="btn-close"
@@ -421,7 +512,8 @@
                 <div class="modal-body">
 
                     <p class="mb-0">
-                        Sign in to save books to your shelves.
+                        Sign in or create your reading corner to start
+                        building your personal shelves.
                     </p>
 
                 </div>

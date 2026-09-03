@@ -1,67 +1,238 @@
 ﻿@page
 @model RegisterModel
+
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Create Account";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="bt-auth-page">
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    <div class="bt-auth-shell">
+
+        <!-- Left / welcome side -->
+        <section class="bt-auth-intro">
+
+            <div class="bt-auth-intro-content">
+
+                <p class="home-eyebrow">
+                    <span aria-hidden="true">★</span>
+                    Your reading corner awaits
+                </p>
+
+                <h1>
+                    Start your next
+                    <span>chapter.</span>
+                </h1>
+
+                <p class="bt-auth-lead">
+                    Create your Book Tracker account and build
+                    a personal home for the stories you want to read,
+                    are currently enjoying, and never want to forget.
+                </p>
+
+                <div class="bt-auth-benefits"
+                     aria-label="Book Tracker features">
+
+                    <div class="bt-auth-benefit">
+                        <span aria-hidden="true">✦</span>
+
                         <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+                            <strong>Build your shelves</strong>
+                            <small>Keep every reading mood in its proper place.</small>
                         </div>
-                    </form>
-                }
+                    </div>
 
-            }
+                    <div class="bt-auth-benefit">
+                        <span aria-hidden="true">♥</span>
+
+                        <div>
+                            <strong>Save your favourites</strong>
+                            <small>Because some books deserve permanent residence.</small>
+                        </div>
+                    </div>
+
+                    <div class="bt-auth-benefit">
+                        <span aria-hidden="true">★</span>
+
+                        <div>
+                            <strong>Rate & review</strong>
+                            <small>Remember what you loved — and what you absolutely did not.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="bt-auth-decoration"
+                 aria-hidden="true">
+
+                <span class="bt-auth-star bt-auth-star-one">★</span>
+                <span class="bt-auth-star bt-auth-star-two">✦</span>
+
+                <div class="bt-auth-books">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+
         </section>
+
+
+        <!-- Registration form -->
+        <section class="bt-auth-card">
+
+            <div class="bt-auth-card-heading">
+
+                <p class="home-eyebrow">
+                    Join Book Tracker
+                </p>
+
+                <h2>Create an account</h2>
+
+                <p>
+                    A few details, then the books can begin.
+                </p>
+
+            </div>
+
+
+            <form id="registerForm"
+                  asp-route-returnUrl="@Model.ReturnUrl"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger bt-auth-validation"
+                     role="alert">
+                </div>
+
+
+                <div class="bt-auth-field">
+
+                    <label asp-for="Input.Email"
+                           class="form-label">
+                        Email
+                    </label>
+
+                    <input asp-for="Input.Email"
+                           class="form-control"
+                           autocomplete="username"
+                           aria-required="true"
+                           placeholder="you@example.com" />
+
+                    <span asp-validation-for="Input.Email"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="bt-auth-field">
+
+                    <label asp-for="Input.Password"
+                           class="form-label">
+                        Password
+                    </label>
+
+                    <input asp-for="Input.Password"
+                           class="form-control"
+                           autocomplete="new-password"
+                           aria-required="true"
+                           placeholder="Choose a password" />
+
+                    <span asp-validation-for="Input.Password"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="bt-auth-field">
+
+                    <label asp-for="Input.ConfirmPassword"
+                           class="form-label">
+                        Confirm Password
+                    </label>
+
+                    <input asp-for="Input.ConfirmPassword"
+                           class="form-control"
+                           autocomplete="new-password"
+                           aria-required="true"
+                           placeholder="Repeat your password" />
+
+                    <span asp-validation-for="Input.ConfirmPassword"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <button id="registerSubmit"
+                        type="submit"
+                        class="btn btn-primary bt-auth-submit">
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <div class="bt-auth-login-link">
+
+                <span>
+                    Already have an account?
+                </span>
+
+                <a asp-page="./Login"
+                   asp-route-returnUrl="@Model.ReturnUrl">
+                    Log in
+                </a>
+
+            </div>
+
+
+            @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+            {
+                <div class="bt-auth-external">
+
+                    <div class="bt-auth-divider">
+                        <span>or</span>
+                    </div>
+
+                    <form id="external-account"
+                          asp-page="./ExternalLogin"
+                          asp-route-returnUrl="@Model.ReturnUrl"
+                          method="post">
+
+                        <div class="bt-auth-external-buttons">
+
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit"
+                                        class="btn btn-outline-primary"
+                                        name="provider"
+                                        value="@provider.Name"
+                                        title="Log in using your @provider.DisplayName account">
+
+                                    Continue with @provider.DisplayName
+
+                                </button>
+                            }
+
+                        </div>
+
+                    </form>
+
+                </div>
+            }
+
+        </section>
+
     </div>
+
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

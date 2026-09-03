@@ -4,106 +4,204 @@
     ViewData["Title"] = "My Shelves";
 }
 
-<div class="container py-4">
+<div class="shelves-page cozy-shelves">
 
-    <div class="mb-4">
-        <h1>My Shelves</h1>
+    <!-- Page header -->
+    <header class="cozy-shelves-header">
 
-        <p class="text-muted">
-            Keep track of the books you want to read,
-            are currently reading, and have finished.
-        </p>
-    </div>
+        <div>
+            <p class="home-eyebrow">
+                <span aria-hidden="true">★</span>
+                Your personal library
+            </p>
+
+            <h1>My Shelves</h1>
+
+            <p class="cozy-shelves-intro">
+                A home for the books you're dreaming about,
+                currently lost in, and already carrying around in your heart.
+            </p>
+        </div>
+
+        <div class="cozy-shelves-decoration"
+             aria-hidden="true">
+
+            <span class="shelves-star shelves-star-one">★</span>
+            <span class="shelves-star shelves-star-two">✦</span>
+
+            <div class="mini-book-stack">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+    </header>
+
 
     @if (!Model.HasBooks)
     {
-        <div class="home-empty-state mb-5">
+        <section class="cozy-library-empty">
 
-            <h2>Your shelves are waiting for books</h2>
+            <div class="cozy-library-empty-icon"
+                 aria-hidden="true">
+                ☾
+            </div>
 
-            <p>
-                Discover books and add them to your shelves
-                to start building your reading collection.
-            </p>
+            <div>
+                <p class="home-eyebrow">
+                    An empty shelf is just potential
+                </p>
 
-            <a asp-controller="Discover"
-               asp-action="Index"
-               class="btn btn-primary">
-                Discover Books
-            </a>
+                <h2>Your shelves are waiting for books.</h2>
 
-        </div>
+                <p>
+                    Wander over to Discover and start building
+                    your own little corner of the book world.
+                </p>
+
+                <a asp-controller="Discover"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Discover books
+                </a>
+            </div>
+
+        </section>
     }
     else
     {
         <!-- Want to Read -->
-        <section class="mb-5"
+        <section class="cozy-shelf-section cozy-shelf-want"
                  aria-labelledby="want-to-read-heading">
 
-            <h2 id="want-to-read-heading">
-                Want to Read
-            </h2>
+            <header class="cozy-shelf-heading">
+
+                <div class="cozy-shelf-title">
+
+                    <span class="cozy-shelf-icon"
+                          aria-hidden="true">
+                        ✦
+                    </span>
+
+                    <div>
+                        <p class="home-eyebrow">
+                            The tempting pile
+                        </p>
+
+                        <h2 id="want-to-read-heading">
+                            Want to Read
+                        </h2>
+
+                        <p>
+                            For all those books you're absolutely
+                            going to read. Eventually.
+                        </p>
+                    </div>
+
+                </div>
+
+                <span class="cozy-shelf-count">
+                    @Model.WantToReadBooks.Count
+                    @(Model.WantToReadBooks.Count == 1 ? "book" : "books")
+                </span>
+
+            </header>
+
 
             @if (Model.WantToReadBooks.Any())
             {
-                <div class="row g-4 mt-1">
+                <div class="cozy-shelf-grid">
 
                     @foreach (var book in Model.WantToReadBooks)
                     {
-                        <div class="col-12 col-md-6 col-xl-4">
-
-                            <partial name="_ShelfBookCard"
-                                     model="book" />
-
-                        </div>
+                        <partial name="_ShelfBookCard"
+                                 model="book" />
                     }
 
                 </div>
             }
             else
             {
-                <div class="home-empty-state mt-3">
+                <div class="cozy-shelf-empty">
 
-                    <p class="mb-0">
-                        No books here yet.
+                    <span aria-hidden="true">☆</span>
+
+                    <p>
+                        Nothing tempting you yet.
                         Add a book from Discover to start your reading list.
                     </p>
+
+                    <a asp-controller="Discover"
+                       asp-action="Index">
+                        Browse books →
+                    </a>
 
                 </div>
             }
 
         </section>
 
+
         <!-- Currently Reading -->
-        <section class="mb-5"
+        <section class="cozy-shelf-section cozy-shelf-current"
                  aria-labelledby="currently-reading-heading">
 
-            <h2 id="currently-reading-heading">
-                Currently Reading
-            </h2>
+            <header class="cozy-shelf-heading">
+
+                <div class="cozy-shelf-title">
+
+                    <span class="cozy-shelf-icon"
+                          aria-hidden="true">
+                        ☕
+                    </span>
+
+                    <div>
+                        <p class="home-eyebrow">
+                            Current chapters
+                        </p>
+
+                        <h2 id="currently-reading-heading">
+                            Currently Reading
+                        </h2>
+
+                        <p>
+                            The stories currently responsible for
+                            your lack of sleep.
+                        </p>
+                    </div>
+
+                </div>
+
+                <span class="cozy-shelf-count">
+                    @Model.CurrentlyReadingBooks.Count
+                    @(Model.CurrentlyReadingBooks.Count == 1 ? "book" : "books")
+                </span>
+
+            </header>
+
 
             @if (Model.CurrentlyReadingBooks.Any())
             {
-                <div class="row g-4 mt-1">
+                <div class="cozy-shelf-grid">
 
                     @foreach (var book in Model.CurrentlyReadingBooks)
                     {
-                        <div class="col-12 col-md-6 col-xl-4">
-
-                            <partial name="_ShelfBookCard"
-                                     model="book" />
-
-                        </div>
+                        <partial name="_ShelfBookCard"
+                                 model="book" />
                     }
 
                 </div>
             }
             else
             {
-                <div class="home-empty-state mt-3">
+                <div class="cozy-shelf-empty">
 
-                    <p class="mb-0">
-                        No books here yet.
+                    <span aria-hidden="true">☾</span>
+
+                    <p>
+                        It's suspiciously quiet here.
                         Move a book here when you start reading it.
                     </p>
 
@@ -112,37 +210,66 @@
 
         </section>
 
+
         <!-- Read -->
-        <section class="mb-5"
+        <section class="cozy-shelf-section cozy-shelf-read"
                  aria-labelledby="read-heading">
 
-            <h2 id="read-heading">
-                Read
-            </h2>
+            <header class="cozy-shelf-heading">
+
+                <div class="cozy-shelf-title">
+
+                    <span class="cozy-shelf-icon"
+                          aria-hidden="true">
+                        ★
+                    </span>
+
+                    <div>
+                        <p class="home-eyebrow">
+                            Stories you've lived through
+                        </p>
+
+                        <h2 id="read-heading">
+                            Read
+                        </h2>
+
+                        <p>
+                            Finished, survived, loved, hated
+                            or immediately recommended to everyone.
+                        </p>
+                    </div>
+
+                </div>
+
+                <span class="cozy-shelf-count">
+                    @Model.ReadBooks.Count
+                    @(Model.ReadBooks.Count == 1 ? "book" : "books")
+                </span>
+
+            </header>
+
 
             @if (Model.ReadBooks.Any())
             {
-                <div class="row g-4 mt-1">
+                <div class="cozy-shelf-grid">
 
                     @foreach (var book in Model.ReadBooks)
                     {
-                        <div class="col-12 col-md-6 col-xl-4">
-
-                            <partial name="_ShelfBookCard"
-                                     model="book" />
-
-                        </div>
+                        <partial name="_ShelfBookCard"
+                                 model="book" />
                     }
 
                 </div>
             }
             else
             {
-                <div class="home-empty-state mt-3">
+                <div class="cozy-shelf-empty">
 
-                    <p class="mb-0">
-                        No books here yet.
-                        Books you finish will appear here.
+                    <span aria-hidden="true">✓</span>
+
+                    <p>
+                        No finished books yet.
+                        Books you complete will find their way here.
                     </p>
 
                 </div>

@@ -5,364 +5,565 @@
     ViewData["Title"] = "My Profile";
 }
 
-<div class="container py-4">
+<div class="profile-page cozy-profile">
 
-    <div class="mb-4">
-        <h1>My Profile</h1>
+    <!-- Header -->
+    <header class="cozy-profile-header">
 
-        <p class="text-muted">
-            Manage your account, reading activity and settings.
-        </p>
-    </div>
+        <div>
+            <p class="home-eyebrow">
+                <span aria-hidden="true">★</span>
+                Your reading corner
+            </p>
 
+            <h1>My Profile</h1>
+
+            <p class="cozy-profile-intro">
+                Your account, reading life and a few important
+                bookish settings — all in one place.
+            </p>
+        </div>
+
+        <div class="cozy-profile-header-mark"
+             aria-hidden="true">
+            <span>★</span>
+            <span>✦</span>
+        </div>
+
+    </header>
+
+
+    <!-- Messages -->
     @if (TempData["ProfileMessage"] != null)
     {
-        <div class="alert alert-success"
-             role="alert">
+        <div class="alert alert-success cozy-alert"
+             role="status">
+
+            <span aria-hidden="true">★</span>
+
             @TempData["ProfileMessage"]
+
         </div>
     }
 
     @if (TempData["ProfileError"] != null)
     {
-        <div class="alert alert-danger"
+        <div class="alert alert-danger cozy-profile-error"
              role="alert">
-            @TempData["ProfileError"]
+
+            <strong>Something went wrong.</strong>
+
+            <span>
+                @TempData["ProfileError"]
+            </span>
+
         </div>
     }
 
-    <div class="row g-4">
 
-        <div class="col-12 col-lg-6">
-            <section class="card h-100">
-                <div class="card-body">
+    <!-- Top row -->
+    <div class="cozy-profile-top-grid">
 
-                    <h2 class="h4">
-                        Account Information
-                    </h2>
 
-                    <form asp-action="UpdateAccount"
-                          method="post">
+        <!-- Reading Statistics -->
+        <section class="cozy-profile-panel cozy-profile-stats">
 
-                        <div asp-validation-summary="ModelOnly"
-                             class="text-danger mb-3">
-                        </div>
+            <header class="cozy-profile-panel-heading">
 
-                        <div class="mb-3">
-                            <label class="form-label">
-                                Username
-                            </label>
+                <div>
+                    <p class="home-eyebrow">
+                        Your reading life
+                    </p>
 
-                            <input class="form-control"
-                                   value="@Model.Username"
-                                   readonly />
+                    <h2>Reading Statistics</h2>
+                </div>
 
-                            <div class="form-text">
-                                Username currently follows your email address.
-                            </div>
-                        </div>
+                <span class="cozy-profile-panel-icon"
+                      aria-hidden="true">
+                    ☕
+                </span>
 
-                        <div class="mb-3">
-                            <label asp-for="Email"
-                                   class="form-label">
-                            </label>
+            </header>
 
-                            <input asp-for="Email"
-                                   class="form-control" />
 
-                            <span asp-validation-for="Email"
-                                  class="text-danger">
-                            </span>
-                        </div>
+            <div class="cozy-profile-stat-grid">
 
-                        <button type="submit"
-                                class="btn btn-primary">
-                            Save Changes
-                        </button>
+                <div class="cozy-profile-stat">
 
-                    </form>
+                    <span class="cozy-profile-stat-value">
+                        @Model.BooksRead
+                    </span>
+
+                    <span class="cozy-profile-stat-label">
+                        Books Read
+                    </span>
 
                 </div>
-            </section>
-        </div>
 
-        <div class="col-12 col-lg-6">
-            <section class="card h-100">
-                <div class="card-body">
 
-                    <h2 class="h4">
-                        Reading Statistics
-                    </h2>
+                <div class="cozy-profile-stat">
 
-                    <div class="row g-3 mt-1">
+                    <span class="cozy-profile-stat-value">
+                        @Model.PagesRead
+                    </span>
 
-                        <div class="col-6">
-                            <div class="border rounded p-3 text-center h-100">
+                    <span class="cozy-profile-stat-label">
+                        Pages Read
+                    </span>
 
-                                <div class="fs-2 fw-bold">
-                                    @Model.BooksRead
-                                </div>
+                </div>
 
-                                <div class="text-muted">
-                                    Books Read
-                                </div>
+            </div>
 
-                            </div>
-                        </div>
+        </section>
 
-                        <div class="col-6">
-                            <div class="border rounded p-3 text-center h-100">
 
-                                <div class="fs-2 fw-bold">
-                                    @Model.PagesRead
-                                </div>
+        <!-- Theme -->
+        <section class="cozy-profile-panel cozy-profile-theme">
 
-                                <div class="text-muted">
-                                    Pages Read
-                                </div>
+            <header class="cozy-profile-panel-heading">
 
-                            </div>
-                        </div>
+                <div>
+                    <p class="home-eyebrow">
+                        Make it yours
+                    </p>
+
+                    <h2>Theme</h2>
+                </div>
+
+                <span class="cozy-profile-panel-icon"
+                      aria-hidden="true">
+                    ✦
+                </span>
+
+            </header>
+
+
+            <p class="cozy-profile-helper">
+                Choose between a warm little bookshop
+                and Midnight Library™.
+            </p>
+
+
+            <form asp-action="UpdateTheme"
+                  method="post">
+
+                <fieldset>
+
+                    <legend class="visually-hidden">
+                        Theme
+                    </legend>
+
+
+                    <div class="cozy-theme-options">
+
+                        <label class="cozy-theme-option">
+
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="theme"
+                                   value="@Theme.Light"
+                                   checked="@(Model.Theme == Theme.Light)" />
+
+                            <span class="cozy-theme-preview cozy-theme-preview-light"
+                                  aria-hidden="true">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </span>
+
+                            <span class="cozy-theme-copy">
+
+                                <strong>
+                                    Cozy Bookshop
+                                </strong>
+
+                                <small>
+                                    Warm, soft and caffeinated.
+                                </small>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="cozy-theme-option">
+
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="theme"
+                                   value="@Theme.Dark"
+                                   checked="@(Model.Theme == Theme.Dark)" />
+
+                            <span class="cozy-theme-preview cozy-theme-preview-dark"
+                                  aria-hidden="true">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </span>
+
+                            <span class="cozy-theme-copy">
+
+                                <strong>
+                                    Midnight Library
+                                </strong>
+
+                                <small>
+                                    For suspiciously late reading sessions.
+                                </small>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn btn-primary cozy-theme-save">
+                        Save Theme
+                    </button>
+
+                </fieldset>
+
+            </form>
+
+        </section>
+
+    </div>
+
+
+    <!-- Main Profile Grid -->
+    <div class="cozy-profile-main-grid">
+
+
+        <!-- Account -->
+        <section class="cozy-profile-panel">
+
+            <header class="cozy-profile-panel-heading">
+
+                <div>
+                    <p class="home-eyebrow">
+                        Account
+                    </p>
+
+                    <h2>Account Information</h2>
+                </div>
+
+                <span class="cozy-profile-panel-icon"
+                      aria-hidden="true">
+                    &#64;
+                </span>
+
+            </header>
+
+
+            <form asp-action="UpdateAccount"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Username
+                    </label>
+
+                    <input class="form-control"
+                           value="@Model.Username"
+                           readonly />
+
+                    <div class="form-text">
+                        Username currently follows your email address.
+                    </div>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="Email"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Save Changes
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Password -->
+        <section class="cozy-profile-panel">
+
+            <header class="cozy-profile-panel-heading">
+
+                <div>
+                    <p class="home-eyebrow">
+                        Security
+                    </p>
+
+                    <h2>Change Password</h2>
+                </div>
+
+                <span class="cozy-profile-panel-icon"
+                      aria-hidden="true">
+                    •••
+                </span>
+
+            </header>
+
+
+            <p class="cozy-profile-helper">
+                Enter your current password and choose a new one.
+            </p>
+
+
+            <form asp-action="ChangePassword"
+                  method="post">
+
+                <div class="mb-3">
+
+                    <label asp-for="CurrentPassword"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="CurrentPassword"
+                           class="form-control"
+                           autocomplete="current-password" />
+
+                    <span asp-validation-for="CurrentPassword"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="cozy-password-row">
+
+                    <div>
+
+                        <label asp-for="NewPassword"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="NewPassword"
+                               class="form-control"
+                               autocomplete="new-password" />
+
+                        <span asp-validation-for="NewPassword"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <label asp-for="ConfirmPassword"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="ConfirmPassword"
+                               class="form-control"
+                               autocomplete="new-password" />
+
+                        <span asp-validation-for="ConfirmPassword"
+                              class="text-danger">
+                        </span>
 
                     </div>
 
                 </div>
-            </section>
-        </div>
 
-        <div class="col-12 col-lg-6">
-            <section class="card h-100">
-                <div class="card-body">
 
-                    <h2 class="h4">
-                        Favourite Books
-                    </h2>
+                <button type="submit"
+                        class="btn btn-primary mt-3">
+                    Change Password
+                </button>
 
-                    @if (Model.FavouriteBooks.Count == 0)
-                    {
-                        <p class="text-muted mb-0">
-                            You haven't added any favourite books yet.
-                        </p>
-                    }
-                    else
-                    {
-                        <div class="row g-3">
+            </form>
 
-                            @foreach (var book in Model.FavouriteBooks)
+        </section>
+
+    </div>
+
+
+    <!-- Favourite Books -->
+    <section class="cozy-profile-panel cozy-profile-favourites">
+
+        <header class="cozy-profile-panel-heading cozy-favourites-heading">
+
+            <div>
+
+                <p class="home-eyebrow">
+                    <span aria-hidden="true">♥</span>
+                    The chosen ones
+                </p>
+
+                <h2>Favourite Books</h2>
+
+                <p class="cozy-profile-helper">
+                    The books that earned permanent residence
+                    in your tiny fictional hall of fame.
+                </p>
+
+            </div>
+
+
+            <span class="cozy-favourite-count">
+                @Model.FavouriteBooks.Count
+                @(Model.FavouriteBooks.Count == 1 ? "favourite" : "favourites")
+            </span>
+
+        </header>
+
+
+        @if (Model.FavouriteBooks.Count == 0)
+        {
+            <div class="cozy-profile-empty">
+
+                <span aria-hidden="true">
+                    ♡
+                </span>
+
+                <div>
+
+                    <h3>
+                        No favourites yet
+                    </h3>
+
+                    <p>
+                        Apparently nobody has earned the heart yet.
+                        The pressure is on.
+                    </p>
+
+                    <a asp-controller="Discover"
+                       asp-action="Index">
+                        Find something lovable →
+                    </a>
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="cozy-profile-favourite-grid">
+
+                @foreach (var book in Model.FavouriteBooks)
+                {
+                    <article class="cozy-profile-favourite-card">
+
+
+                        <div class="cozy-profile-favourite-cover">
+
+                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
                             {
-                                <div class="col-12">
+                                <img src="@book.CoverImageUrl"
+                                     alt="Cover of @book.Title" />
+                            }
+                            else
+                            {
+                                <div class="cozy-profile-cover-placeholder">
 
-                                    <article class="border rounded p-3">
+                                    <span aria-hidden="true">
+                                        ★
+                                    </span>
 
-                                        <div class="d-flex gap-3 align-items-start">
-
-                                            @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
-                                            {
-                                                <img src="@book.CoverImageUrl"
-                                                     alt="Cover of @book.Title"
-                                                     class="rounded"
-                                                     style="width: 70px; height: 105px; object-fit: cover;" />
-                                            }
-
-                                            <div class="flex-grow-1">
-
-                                                <h3 class="h6 mb-1">
-                                                    @book.Title
-                                                </h3>
-
-                                                @if (!string.IsNullOrWhiteSpace(book.Author))
-                                                {
-                                                    <p class="text-muted mb-2">
-                                                        @book.Author
-                                                    </p>
-                                                }
-
-                                                <div class="d-flex flex-wrap gap-2">
-
-                                                    <a asp-controller="Discover"
-                                                       asp-action="Details"
-                                                       asp-route-id="@book.ExternalBookId"
-                                                       class="btn btn-sm btn-outline-primary">
-                                                        View Details
-                                                    </a>
-
-                                                    <form asp-controller="Profile"
-                                                          asp-action="ToggleFavourite"
-                                                          method="post"
-                                                          class="d-inline">
-
-                                                        <input type="hidden"
-                                                               name="userBookId"
-                                                               value="@book.UserBookId" />
-
-                                                        <button type="submit"
-                                                                class="btn btn-sm btn-outline-danger">
-                                                            Remove Favourite
-                                                        </button>
-
-                                                    </form>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </article>
+                                    <small>
+                                        No cover
+                                    </small>
 
                                 </div>
                             }
 
+
+                            <span class="cozy-profile-heart"
+                                  aria-hidden="true">
+                                ♥
+                            </span>
+
                         </div>
-                    }
 
-                </div>
-            </section>
-        </div>
 
-        <div class="col-12 col-lg-6">
-            <section class="card h-100">
-                <div class="card-body">
+                        <div class="cozy-profile-favourite-content">
 
-                    <h2 class="h4">
-                        Settings
-                    </h2>
+                            <div>
 
-                    <p class="text-muted">
-                        Choose how Book Tracker should look.
-                    </p>
+                                <h3>
+                                    @book.Title
+                                </h3>
 
-                    <form asp-action="UpdateTheme"
-                          method="post">
-
-                        <fieldset>
-
-                            <legend class="h6">
-                                Theme
-                            </legend>
-
-                            <div class="form-check mb-2">
-
-                                <input class="form-check-input"
-                                       type="radio"
-                                       name="theme"
-                                       id="themeLight"
-                                       value="@Theme.Light"
-                                       checked="@(Model.Theme == Theme.Light)" />
-
-                                <label class="form-check-label"
-                                       for="themeLight">
-                                    Light
-                                </label>
+                                @if (!string.IsNullOrWhiteSpace(book.Author))
+                                {
+                                    <p>
+                                        @book.Author
+                                    </p>
+                                }
 
                             </div>
 
-                            <div class="form-check mb-3">
 
-                                <input class="form-check-input"
-                                       type="radio"
-                                       name="theme"
-                                       id="themeDark"
-                                       value="@Theme.Dark"
-                                       checked="@(Model.Theme == Theme.Dark)" />
+                            <div class="cozy-profile-favourite-actions">
 
-                                <label class="form-check-label"
-                                       for="themeDark">
-                                    Dark
-                                </label>
+                                <a asp-controller="Book"
+                                   asp-action="Details"
+                                   asp-route-id="@book.ExternalBookId"
+                                   class="btn btn-sm btn-outline-primary">
+                                    View Details
+                                </a>
+
+
+                                <form asp-controller="Profile"
+                                      asp-action="ToggleFavourite"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="userBookId"
+                                           value="@book.UserBookId" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger">
+                                        Remove Favourite
+                                    </button>
+
+                                </form>
 
                             </div>
 
-                            <button type="submit"
-                                    class="btn btn-primary">
-                                Save Theme
-                            </button>
-
-                        </fieldset>
-
-                    </form>
-
-                </div>
-            </section>
-        </div>
-
-        <div class="col-12 col-lg-6">
-            <section class="card h-100">
-                <div class="card-body">
-
-                    <h2 class="h4">
-                        Change Password
-                    </h2>
-
-                    <p class="text-muted">
-                        Enter your current password and choose a new password.
-                    </p>
-
-                    <form asp-action="ChangePassword"
-                          method="post">
-
-                        <div class="mb-3">
-
-                            <label asp-for="CurrentPassword"
-                                   class="form-label">
-                            </label>
-
-                            <input asp-for="CurrentPassword"
-                                   class="form-control"
-                                   autocomplete="current-password" />
-
-                            <span asp-validation-for="CurrentPassword"
-                                  class="text-danger">
-                            </span>
-
                         </div>
 
-                        <div class="mb-3">
+                    </article>
+                }
 
-                            <label asp-for="NewPassword"
-                                   class="form-label">
-                            </label>
+            </div>
+        }
 
-                            <input asp-for="NewPassword"
-                                   class="form-control"
-                                   autocomplete="new-password" />
-
-                            <span asp-validation-for="NewPassword"
-                                  class="text-danger">
-                            </span>
-
-                        </div>
-
-                        <div class="mb-3">
-
-                            <label asp-for="ConfirmPassword"
-                                   class="form-label">
-                            </label>
-
-                            <input asp-for="ConfirmPassword"
-                                   class="form-control"
-                                   autocomplete="new-password" />
-
-                            <span asp-validation-for="ConfirmPassword"
-                                  class="text-danger">
-                            </span>
-
-                        </div>
-
-                        <button type="submit"
-                                class="btn btn-primary">
-                            Change Password
-                        </button>
-
-                    </form>
-
-                </div>
-            </section>
-        </div>
-
-    </div>
+    </section>
 
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
